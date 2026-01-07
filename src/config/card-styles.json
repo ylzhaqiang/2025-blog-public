@@ -87,7 +87,7 @@
 		"order": 8,
 		"offsetX": null,
 		"offsetY": null,
-		"enabled": true
+		"enabled": false
 	},
 	"hatCard": {
 		"width": 99,
@@ -103,6 +103,6 @@
 		"order": 11,
 		"offsetX": null,
 		"offsetY": null,
-		"enabled": false
+		"enabled": true
 	}
 }
