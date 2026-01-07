@@ -58,7 +58,7 @@
 		{
 			"id": "email",
 			"type": "email",
-			"value": "yysuni1001@gmail.com",
+			"value": "zhaqiang1001@163.com",
 			"label": "",
 			"order": 1
 		}
@@ -76,12 +76,12 @@
 		"link": "",
 		"icp": {
 			"text": "鄂ICP备2025165912号",
-			"link": "",
+			"link": "https://beian.miit.gov.cn/",
 			"icon": ""
 		},
 		"publicSecurity": {
 			"text": "鄂公网安备42118202000164号",
-			"link": "",
+			"link": "https://beian.mps.gov.cn/#/query/webSearch?code=42118202000164",
 			"icon": "/images/beian.png"
 		}
 	}
