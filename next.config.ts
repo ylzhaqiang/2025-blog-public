@@ -33,7 +33,11 @@ const nextConfig: NextConfig = {
 
 		return config
 	},
-
+    // ▼▼▼ 在这里添加图片优化配置 ▼▼▼
+    images: {
+        unoptimized: true
+    },
+    // ▲▲▲ 添加结束 ▲▲▲
 	async redirects() {
 		return [
 			{
