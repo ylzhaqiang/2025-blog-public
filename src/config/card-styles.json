@@ -87,7 +87,7 @@
 		"order": 8,
 		"offsetX": null,
 		"offsetY": null,
-		"enabled": true
+		"enabled": false
 	},
 	"hatCard": {
 		"width": 99,
@@ -98,11 +98,11 @@
 		"enabled": false
 	},
 	"beianCard": {
-		"width": 200,
-		"height": 60,
+		"width": 446,
+		"height": 63,
 		"order": 11,
-		"offsetX": null,
-		"offsetY": null,
-		"enabled": false
+		"offsetX": 104,
+		"offsetY": 357,
+		"enabled": true
 	}
 }
