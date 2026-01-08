@@ -46,14 +46,28 @@
 			"type": "github",
 			"value": "https://github.com/yysuni",
 			"label": "Github",
-			"order": 3
+			"order": 1
 		},
 		{
 			"id": "email",
 			"type": "email",
 			"value": "zhaqiang1001@163.com",
 			"label": "",
-			"order": 1
+			"order": 2
+		},
+		{
+			"id": "button-1767877932636",
+			"type": "qq",
+			"value": "7894044",
+			"label": "",
+			"order": 3
+		},
+		{
+			"id": "button-1767877834890",
+			"type": "link",
+			"value": "https://lucky.221107.xyz",
+			"label": "lucky",
+			"order": 4
 		}
 	],
 	"clockShowSeconds": false,
