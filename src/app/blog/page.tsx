@@ -444,7 +444,6 @@ export default function BlogPage() {
 					)
 				})}
 			</div>
-
 			<div className='pt-12'>
 				{!loading && items.length === 0 && <div className='text-secondary py-6 text-center text-sm'>暂无文章</div>}
 				{loading && <div className='text-secondary py-6 text-center text-sm'>加载中...</div>}
