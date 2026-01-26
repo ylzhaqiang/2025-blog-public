@@ -58,5 +58,15 @@
 			"常用"
 		],
 		"stars": 3
+	},
+	{
+		"name": "飞牛OS",
+		"logo": "https://nasicon.top/icon/feiniu%E9%A3%9E%E7%89%9Bfnnas.jpg",
+		"url": "https://fnos.724782.xyz:1977",
+		"description": "飞牛NAS",
+		"tags": [
+			"Nas-app"
+		],
+		"stars": 3
 	}
 ]
