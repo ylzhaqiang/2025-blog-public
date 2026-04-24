@@ -26,27 +26,27 @@ const list = [
 	{
 		icon: ScrollOutlineSVG,
 		iconActive: ScrollFilledSVG,
-		label: '近期文章',
+		label: '笔记',
 		href: '/blog'
 	},
 	{
 		icon: ProjectsOutlineSVG,
 		iconActive: ProjectsFilledSVG,
-		label: '我的项目',
+		label: '项目',
 		href: '/projects'
 	},
+        {
+		icon: ShareOutlineSVG,
+		iconActive: ShareFilledSVG,
+		label: '收藏',
+		href: '/share'
+	}
 	{
 		icon: AboutOutlineSVG,
 		iconActive: AboutFilledSVG,
-		label: '关于网站',
+		label: '关于',
 		href: '/about'
 	},
-	{
-		icon: ShareOutlineSVG,
-		iconActive: ShareFilledSVG,
-		label: '推荐分享',
-		href: '/share'
-	}
 ]
 
 const extraSize = 8
