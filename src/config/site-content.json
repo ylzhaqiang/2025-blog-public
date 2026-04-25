@@ -32,7 +32,7 @@
 			"url": "/images/art/a46372ff45bc5524.jpg"
 		}
 	],
-	"currentArtImageId": "cat",
+	"currentArtImageId": "a46372ff45bc5524",
 	"backgroundImages": [
 		{
 			"id": "",
@@ -78,6 +78,11 @@
 	"currentHatIndex": 3,
 	"hatFlipped": false,
 	"enableChristmas": true,
+	"passwordProtection": {
+		"enabled": false,
+		"items": ["blog", "projects", "share", "about"],
+		"password": ""
+	},
 	"beian": {
 		"text": "",
 		"link": "",

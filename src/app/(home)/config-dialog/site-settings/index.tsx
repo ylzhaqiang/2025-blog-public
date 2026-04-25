@@ -126,6 +126,52 @@ export function SiteSettings({
 				</label>
 			</div>
 
+			<div className='rounded-xl border border-border bg-card p-4'>
+				<div className='mb-4 text-sm font-medium'>导航密码保护</div>
+				<div className='space-y-4'>
+					<label className='flex items-center gap-3'>
+						<input
+							type='checkbox'
+							checked={formData.passwordProtection?.enabled ?? false}
+							onChange={e => setFormData({ ...formData, passwordProtection: { ...formData.passwordProtection!, enabled: e.target.checked } })}
+							className='accent-brand h-4 w-4 rounded'
+						/>
+						<span className='text-sm'>启用密码保护</span>
+					</label>
+
+					{formData.passwordProtection?.enabled && (
+						<>
+							<div className='flex flex-wrap gap-2'>
+								{['blog', 'projects', 'share', 'about'].map(key => {
+									const labels: Record<string, string> = { blog: '笔记', projects: '项目', share: '收藏', about: '关于' }
+									const isSelected = formData.passwordProtection?.items?.includes(key)
+									return (
+										<button
+											key={key}
+											type='button'
+											onClick={() => {
+												const items = formData.passwordProtection?.items || []
+												const newItems = isSelected ? items.filter((i: string) => i !== key) : [...items, key]
+												setFormData({ ...formData, passwordProtection: { ...formData.passwordProtection!, items: newItems } })
+											}}
+											className={`rounded-full px-4 py-1.5 text-sm ${isSelected ? 'brand-btn' : 'bg-card border border-border'}`}>
+											{labels[key]}
+										</button>
+									)
+								})}
+							</div>
+							<input
+								type='password'
+								placeholder='设置访问密码'
+								value={formData.passwordProtection?.password || ''}
+								onChange={e => setFormData({ ...formData, passwordProtection: { ...formData.passwordProtection!, password: e.target.value } })}
+								className='w-full rounded-xl border-2 border-border bg-card px-4 py-2 focus:border-brand focus:outline-none'
+							/>
+						</>
+					)}
+				</div>
+			</div>
+
 			<HatSection formData={formData} setFormData={setFormData} />
 		</div>
 	)

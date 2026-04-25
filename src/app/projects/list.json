@@ -68,5 +68,15 @@
 		"tags": [
 			"NasApp"
 		]
+	},
+	{
+		"name": "OpenCode",
+		"year": 2026,
+		"image": "https://nasicon.top/icon/Filecodebox.png",
+		"url": "https://opencode.724782.xyz:1977",
+		"description": "opencode",
+		"tags": [
+			"NasApp"
+		]
 	}
 ]
