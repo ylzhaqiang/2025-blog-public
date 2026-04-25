@@ -1,15 +1,5 @@
 [
 	{
-		"name": "湖北电子税务局",
-		"logo": "https://icon-manager.1851365c.er.aliyun-esa.net/icon/ETax--电子税务局--chinatax.gov.cn.png",
-		"url": "https://tpass.hubei.chinatax.gov.cn:8443/#/login?redirect_uri=https%3A%2F%2Fetax.hubei.chinatax.gov.cn%3A8443%2Fmhzx%2Fapi%2Fmh%2Ftpass%2Fcode&client_id=b6edq5qqc5cb4c3288q6aq6fab5qc3b4&response_type=code&state=b58a517dcbd74a8098db3424afdb98de",
-		"description": "湖北电子税务局",
-		"tags": [
-			"常用"
-		],
-		"stars": 3
-	},
-	{
 		"name": "政府定点采购网",
 		"logo": "https://nasicon.top/icon/Busybox--BusyBox--busybox.net.png",
 		"url": "https://wssc.hubeigp.gov.cn/upgrade/home?site_id=%20421182",
@@ -42,7 +32,7 @@
 	{
 		"name": "观影",
 		"logo": "https://www.gying.si/favicon.ico",
-		"url": "https://www.gying.si/",
+		"url": "https://www.gying.net",
 		"description": "观影",
 		"tags": [
 			"常用"
@@ -60,12 +50,42 @@
 		"stars": 3
 	},
 	{
-		"name": "飞牛OS",
-		"logo": "https://nasicon.top/icon/feiniu%E9%A3%9E%E7%89%9Bfnnas.jpg",
-		"url": "https://fnos.724782.xyz:1977",
-		"description": "飞牛NAS",
+		"name": "绅漫发布页",
+		"logo": "https://nasicon.top/icon/dynatrace_oneagent.png",
+		"url": "https://wn01.link",
+		"description": "漫画",
 		"tags": [
-			"Nas-app"
+			"常用"
+		],
+		"stars": 3
+	},
+	{
+		"name": "Ollama",
+		"logo": "https://ollama.com/public/ollama.png",
+		"url": "https://ollama.com/settings",
+		"description": "ollama cloud",
+		"tags": [
+			"常用"
+		],
+		"stars": 3
+	},
+	{
+		"name": "game520",
+		"logo": "https://v1.imagehub.cc/images/2026/04/21/1210e985ce56b56f20e06094f6817d28.png",
+		"url": "https://www.gamer520.com/",
+		"description": "游戏下载",
+		"tags": [
+			"常用"
+		],
+		"stars": 3
+	},
+	{
+		"name": "红警",
+		"logo": "https://www.ra2web.com/favicon.ico",
+		"url": "https://hongjing.221107.xyz/",
+		"description": "红警网页版",
+		"tags": [
+			"常用"
 		],
 		"stars": 3
 	}
