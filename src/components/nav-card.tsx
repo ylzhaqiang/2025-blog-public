@@ -40,7 +40,7 @@ const list = [
 		iconActive: ShareFilledSVG,
 		label: '收藏',
 		href: '/share'
-	}
+	},
 	{
 		icon: AboutOutlineSVG,
 		iconActive: AboutFilledSVG,
