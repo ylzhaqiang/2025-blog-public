@@ -118,7 +118,7 @@ export default function RssReader() {
 								<button
 									key={feed.url}
 									onClick={() => setCurrentFeedIndex(index)}
-									className={`whitespace-nowrap rounded-full px-2 py-0.5 text-xs transition-colors ${
+									className={`whitespace-nowrap rounded-full px-2 py-0.5 text-base transition-colors ${
 										index === currentFeedIndex
 											? 'bg-brand text-white'
 											: 'bg-white/30 text-secondary hover:bg-white/40'
@@ -152,8 +152,8 @@ export default function RssReader() {
 										target='_blank'
 										rel='noopener noreferrer'
 										className='block rounded-lg border border-border/30 bg-white/20 p-2 transition-colors hover:bg-white/30'>
-										<div className='text-xs font-medium line-clamp-1'>{item.title}</div>
-										<div className='text-secondary mt-1 text-base line-clamp-1'>{item.description}</div>
+										<div className='text-sm font-medium line-clamp-1'>{item.title}</div>
+										<div className='text-secondary mt-1 text-xs line-clamp-1'>{item.description}</div>
 									</a>
 								))}
 							</div>
