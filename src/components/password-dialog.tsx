@@ -33,7 +33,7 @@ export function PasswordDialog({ open, password, onSuccess, onCancel }: Password
 
 	return (
 		<DialogModal open={open} onClose={handleCancel} disableCloseOnOverlay>
-			<div className='card flex flex-col items-center justify-center gap-6 p-10 min-w-[360px]'>
+			<div className='card relative flex flex-col items-center justify-center gap-6 p-10 min-w-[360px]'>
 				<div className='text-2xl font-medium'>🔐 请输入访问密码</div>
 				<input
 					type='password'
