@@ -152,8 +152,8 @@ export default function RssReader() {
 										target='_blank'
 										rel='noopener noreferrer'
 										className='block rounded-lg border border-border/30 bg-white/20 p-2 transition-colors hover:bg-white/30'>
-										<div className='text-base font-medium line-clamp-1'>{item.title}</div>
-										<div className='text-secondary mt-1 text-xs line-clamp-1'>{item.description}</div>
+										<div className='text-xs font-medium line-clamp-1'>{item.title}</div>
+										<div className='text-secondary mt-1 text-base line-clamp-1'>{item.description}</div>
 									</a>
 								))}
 							</div>
