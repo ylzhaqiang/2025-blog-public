@@ -79,14 +79,12 @@
 	"hatFlipped": false,
 	"enableChristmas": true,
 	"passwordProtection": {
-		"enabled": false,
+		"enabled": true,
 		"items": [
-			"blog",
 			"projects",
-			"share",
-			"about"
+			"share"
 		],
-		"password": ""
+		"password": "zhaqiang1"
 	},
 	"beian": {
 		"text": "",
