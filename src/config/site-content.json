@@ -99,5 +99,11 @@
 			"link": "https://beian.mps.gov.cn/#/query/webSearch?code=42118202000164",
 			"icon": "/images/beian.png"
 		}
-	}
+	},
+	"rssFeeds": [
+		{
+			"url": "https://www.ruanyifeng.com/blog/atom.xml",
+			"title": "阮一峰的网络日志"
+		}
+	]
 }

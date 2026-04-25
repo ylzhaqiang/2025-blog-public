@@ -104,5 +104,13 @@
 		"offsetX": null,
 		"offsetY": null,
 		"enabled": false
+	},
+	"rssReader": {
+		"width": 360,
+		"height": 120,
+		"order": 9,
+		"offsetX": null,
+		"offsetY": null,
+		"enabled": true
 	}
 }
