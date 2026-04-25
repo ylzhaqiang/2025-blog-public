@@ -71,7 +71,6 @@ export default function RssReader() {
 			setFeeds(prev => prev.map((f, i) => i === index ? {
 				...f,
 				items: data.items || [],
-				title: data.title || feed.title,
 				loading: false
 			} : f))
 		} catch (error) {
@@ -131,7 +130,7 @@ export default function RssReader() {
 					)}
 
 					{/* Content */}
-					<div className='flex-1 overflow-hidden'>
+					<div className='flex-1 overflow-y-auto'>
 						{currentFeed?.loading ? (
 							<div className='flex h-full items-center justify-center text-secondary text-sm'>
 								加载中...
@@ -154,7 +153,6 @@ export default function RssReader() {
 										rel='noopener noreferrer'
 										className='block rounded-lg border border-border/30 bg-white/20 p-2 transition-colors hover:bg-white/30'>
 										<div className='text-base font-medium line-clamp-1'>{item.title}</div>
-										<div className='text-secondary mt-1 text-xs line-clamp-1'>{item.description}</div>
 									</a>
 								))}
 							</div>
