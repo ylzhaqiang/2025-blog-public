@@ -6,7 +6,6 @@ import Card from '@/components/card'
 import { useCenterStore } from '@/hooks/use-center'
 import { useConfigStore } from './stores/config-store'
 import { HomeDraggableLayer } from './home-draggable-layer'
-import RssSVG from '@/svgs/rss.svg'
 
 interface RssItem {
 	title: string
@@ -112,18 +111,10 @@ export default function RssReader() {
 				height={styles?.height || 400}
 				x={position.x}
 				y={position.y}>
-				<div className='flex h-full flex-col p-4'>
-					{/* Header */}
-					<div className='mb-3 flex items-center justify-between'>
-						<div className='flex items-center gap-2'>
-							<RssSVG className='size-5 text-orange-500' />
-							<span className='font-medium'>RSS {currentFeed?.title || '阅读器'}</span>
-						</div>
-					</div>
-
+				<div className='flex h-full flex-col p-4 pt-2'>
 					{/* Feed Tabs */}
 					{feeds.length > 1 && (
-						<div className='mb-3 flex flex-wrap gap-1'>
+						<div className='mb-2 flex flex-wrap gap-1'>
 							{feeds.map((feed, index) => (
 								<button
 									key={feed.url}
@@ -162,7 +153,7 @@ export default function RssReader() {
 										target='_blank'
 										rel='noopener noreferrer'
 										className='block rounded-lg border border-border/30 bg-white/20 p-2 transition-colors hover:bg-white/30'>
-										<div className='text-sm font-medium line-clamp-1'>{item.title}</div>
+										<div className='text-base font-medium line-clamp-1'>{item.title}</div>
 										<div className='text-secondary mt-1 text-xs line-clamp-1'>{item.description}</div>
 									</a>
 								))}
