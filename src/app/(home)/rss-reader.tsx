@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useRef } from 'react'
 import { motion } from 'motion/react'
 import Card from '@/components/card'
 import { useCenterStore } from '@/hooks/use-center'
@@ -30,7 +30,6 @@ export default function RssReader() {
 		loading: boolean
 		error: string | null
 	}[]>([])
-	const [isExpanded, setIsExpanded] = useState(false)
 
 	const rssFeeds = siteContent.rssFeeds || []
 
@@ -56,9 +55,12 @@ export default function RssReader() {
 		}
 	}, [rssFeeds])
 
-	// Fetch RSS feed
+	// Fetch RSS feed - 使用 ref 存储 fetch 函数避免闭包问题
+	const fetchFeedRef = useRef<Record<number, boolean>>({})
+
 	const fetchFeed = useCallback(async (feed: { url: string; title: string }, index: number) => {
-		if (!feed.url) return
+		if (!feed.url || fetchFeedRef.current[index]) return
+		fetchFeedRef.current[index] = true
 
 		setFeeds(prev => prev.map((f, i) => i === index ? { ...f, loading: true, error: null } : f))
 
@@ -79,6 +81,8 @@ export default function RssReader() {
 				error: '加载失败',
 				loading: false
 			} : f))
+		} finally {
+			fetchFeedRef.current[index] = false
 		}
 	}, [])
 
@@ -86,25 +90,26 @@ export default function RssReader() {
 	useEffect(() => {
 		if (feeds.length > 0) {
 			feeds.forEach((feed, index) => {
-				if (feed.url && feed.items.length === 0) {
+				if (feed.url && feed.items.length === 0 && !feed.loading) {
 					fetchFeed(feed, index)
 				}
 			})
 		}
-	}, [feeds, fetchFeed])
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [feeds.length])
 
 	const currentFeed = feeds[currentFeedIndex]
 
 	if (!show || styles?.enabled === false) return null
 
-	const displayItems = currentFeed?.items.slice(0, isExpanded ? 10 : 3) || []
+	const displayItems = currentFeed?.items.slice(0, 10) || []
 
 	return (
-		<HomeDraggableLayer cardKey='rssReader' x={position.x} y={position.y} width={styles?.width || 360} height={isExpanded ? (styles?.height || 400) : 120}>
+		<HomeDraggableLayer cardKey='rssReader' x={position.x} y={position.y} width={styles?.width || 360} height={styles?.height || 400}>
 			<Card
 				order={styles?.order || 9}
 				width={styles?.width || 360}
-				height={isExpanded ? (styles?.height || 400) : 120}
+				height={styles?.height || 400}
 				x={position.x}
 				y={position.y}>
 				<div className='flex h-full flex-col p-4'>
@@ -114,13 +119,6 @@ export default function RssReader() {
 							<RssSVG className='size-5 text-orange-500' />
 							<span className='font-medium'>RSS {currentFeed?.title || '阅读器'}</span>
 						</div>
-						<button
-							onClick={() => setIsExpanded(!isExpanded)}
-							className='text-secondary hover:text-primary rounded-lg p-1 transition-colors'>
-							<svg className={`size-4 transition-transform ${isExpanded ? 'rotate-180' : ''}`} fill='none' viewBox='0 0 24 24' stroke='currentColor'>
-								<path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M19 9l-7 7-7-7' />
-							</svg>
-						</button>
 					</div>
 
 					{/* Feed Tabs */}
