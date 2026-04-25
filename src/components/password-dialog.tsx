@@ -33,8 +33,8 @@ export function PasswordDialog({ open, password, onSuccess, onCancel }: Password
 
 	return (
 		<DialogModal open={open} onClose={handleCancel} disableCloseOnOverlay>
-			<div className='card flex flex-col items-center justify-center gap-4 p-8'>
-				<div className='text-lg font-medium'>请输入访问密码</div>
+			<div className='card flex flex-col items-center justify-center gap-6 p-10 min-w-[360px]'>
+				<div className='text-2xl font-medium'>🔐 请输入访问密码</div>
 				<input
 					type='password'
 					value={input}
@@ -46,19 +46,19 @@ export function PasswordDialog({ open, password, onSuccess, onCancel }: Password
 						if (e.key === 'Enter') handleSubmit()
 					}}
 					placeholder='输入密码...'
-					className='w-full rounded-xl border-2 border-border bg-card px-4 py-2 text-center focus:border-brand focus:outline-none'
+					className='w-full rounded-xl border-2 border-border bg-card px-6 py-3 text-center text-lg focus:border-brand focus:outline-none'
 					autoFocus
 				/>
-				{error && <div className='text-red-500 text-sm'>密码错误，请重试</div>}
-				<div className='flex gap-3'>
+				{error && <div className='text-red-500 text-base'>密码错误，请重试</div>}
+				<div className='flex gap-4 mt-2'>
 					<motion.button
 						whileHover={{ scale: 1.05 }}
 						whileTap={{ scale: 0.95 }}
 						onClick={handleCancel}
-						className='bg-card rounded-xl border px-6 py-2'>
+						className='bg-card rounded-xl border px-8 py-3 text-base'>
 						取消
 					</motion.button>
-					<motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} onClick={handleSubmit} className='brand-btn px-6'>
+					<motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} onClick={handleSubmit} className='brand-btn px-8 py-3 text-base'>
 						确认
 					</motion.button>
 				</div>
