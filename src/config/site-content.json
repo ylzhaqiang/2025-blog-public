@@ -51,7 +51,7 @@
 		{
 			"id": "email",
 			"type": "x",
-			"value": "https://www.javbus.com/forum/",
+			"value": "https://ollama.com/settings",
 			"label": "",
 			"order": 2
 		},
@@ -81,7 +81,7 @@
 		{
 			"id": "button-1777196650498",
 			"type": "instagram",
-			"value": "https://ollama.com/settings",
+			"value": "https://club.fnnas.com/forum.php?mod=forumdisplay&fid=25",
 			"icon": "",
 			"order": 6,
 			"label": ""
