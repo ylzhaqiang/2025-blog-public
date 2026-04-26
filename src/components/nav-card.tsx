@@ -116,11 +116,22 @@ export default function NavCard() {
 		}
 	}, [hoveredIndex, activeIndex, form])
 
-	// Left sidebar mode for non-home pages
-	if (form === 'icons') {
+	const handleItemClick = (item: (typeof list)[number]) => {
+		if (protection?.enabled && protection.items?.includes(item.key) && protection.password) {
+			setPendingHref(item.href)
+		} else {
+			router.push(item.href)
+		}
+	}
+
+	// Left sidebar for all pages (always visible alongside other nav forms)
+	const showLeftSidebar = true
+
+	// Left sidebar mode
+	if (showLeftSidebar && show) {
 		return (
 			<nav
-				className='fixed left-0 top-0 z-50 flex h-dvh w-16 flex-col items-center border-r border-border/50 bg-background/80 backdrop-blur-sm py-4'
+				className='fixed left-0 top-1/2 -translate-y-1/2 z-50 flex h-auto w-16 flex-col items-center gap-3 border-r border-border/50 bg-background/80 backdrop-blur-sm py-4'
 				aria-label='站内外导航'
 			>
 				{/* Logo */}
@@ -161,14 +172,6 @@ export default function NavCard() {
 
 	if (maxSM) position = { x: center.x - size.width / 2, y: 16 }
 
-	const handleItemClick = (item: (typeof list)[number]) => {
-		if (protection?.enabled && protection.items?.includes(item.key) && protection.password) {
-			setPendingHref(item.href)
-		} else {
-			router.push(item.href)
-		}
-	}
-
 	const handlePasswordSuccess = () => {
 		if (pendingHref) {
 			router.push(pendingHref)
@@ -176,7 +179,7 @@ export default function NavCard() {
 		}
 	}
 
-	if (show)
+	if (show && form !== 'full')
 		return (
 			<>
 				<PasswordDialog
