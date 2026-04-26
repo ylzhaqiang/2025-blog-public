@@ -235,25 +235,23 @@ export default function SocialButtons() {
 		}
 
 		if (button.type === 'link') {
-			const linkIconSize = hasLabel ? 'size-6' : 'size-8'
-			const iconSrc = button.icon
+			const linkIconSrc = button.icon
 			return (
 				<motion.a
 					key={button.id}
 					href={button.value}
 					target='_blank'
 					{...commonProps}
-					className={`card relative flex items-center gap-2 rounded-xl font-medium whitespace-nowrap ${hasLabel || iconSrc ? 'px-3 py-2.5' : 'p-1.5'}`}>
-					{iconSrc ? (
-						iconSrc.startsWith('/') || iconSrc.startsWith('http') ? (
-							<img src={iconSrc} alt='' className={linkIconSize} style={{ objectFit: 'contain' }} />
+					className={`card btn relative rounded-xl p-1.5`}>
+					{linkIconSrc ? (
+						linkIconSrc.startsWith('/') || linkIconSrc.startsWith('http') ? (
+							<img src={linkIconSrc} alt='' className='size-8' style={{ objectFit: 'contain' }} />
 						) : (
-							<span className={linkIconSize}>{iconSrc}</span>
+							<span className='size-8'>{linkIconSrc}</span>
 						)
 					) : (
-						<LinkSVG className={linkIconSize} />
+						<LinkSVG className='size-8' />
 					)}
-					{(hasLabel || !iconSrc) && (button.label || button.value)}
 				</motion.a>
 			)
 		}
