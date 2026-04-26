@@ -68,6 +68,13 @@
 			"value": "https://lucky.221107.xyz",
 			"label": "lucky",
 			"order": 4
+		},
+		{
+			"id": "button-1777167307510",
+			"type": "link",
+			"value": "https://fnos.724782.xyz:1977",
+			"label": "fnos",
+			"order": 5
 		}
 	],
 	"clockShowSeconds": false,
