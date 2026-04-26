@@ -94,6 +94,24 @@ export default function RssReader() {
 					</>
 				)}
 				<div className='flex h-full flex-col p-4 pt-2'>
+					{/* Feed Tabs */}
+					{feeds.length > 1 && (
+						<div className='mb-2 flex flex-wrap gap-1'>
+							{feeds.map((feed, index) => (
+								<button
+									key={feed.url}
+									onClick={() => setCurrentFeedIndex(index)}
+									className={`whitespace-nowrap rounded-full px-2 py-0.5 text-base transition-colors ${
+										index === currentFeedIndex
+											? 'bg-brand text-white'
+											: 'bg-white/30 text-secondary hover:bg-white/40'
+									}`}>
+									{feed.title || `源 ${index + 1}`}
+								</button>
+							))}
+						</div>
+					)}
+
 					{/* Content */}
 					<div className='min-h-0 flex-1 overflow-y-auto'>
 						{currentFeed?.loading ? (
