@@ -6,6 +6,7 @@ import Card from '@/components/card'
 import { useCenterStore } from '@/hooks/use-center'
 import { useConfigStore } from './stores/config-store'
 import { HomeDraggableLayer } from './home-draggable-layer'
+import { useSize } from '@/hooks/use-size'
 
 interface RssItem {
 	title: string
@@ -17,11 +18,22 @@ interface RssItem {
 export default function RssReader() {
 	const center = useCenterStore()
 	const { cardStyles, siteContent } = useConfigStore()
+	const { maxSM } = useSize()
 	const styles = cardStyles.rssReader
 	const hiCardStyles = cardStyles.hiCard
 
+	const [windowHeight, setWindowHeight] = useState(800)
+	const [windowWidth, setWindowWidth] = useState(400)
 	const [show, setShow] = useState(false)
-	const [currentFeedIndex, setCurrentFeedIndex] = useState(0)
+
+	useEffect(() => {
+		setWindowHeight(window.innerHeight)
+		setWindowWidth(window.innerWidth)
+	}, [])
+
+	useEffect(() => {
+		setShow(true)
+	}, [])
 	const [feeds, setFeeds] = useState<{
 		url: string
 		title: string
@@ -36,6 +48,19 @@ export default function RssReader() {
 		x: styles?.offsetX !== null ? center.x + (styles?.offsetX || 0) : center.x - (styles?.width || 360) / 2,
 		y: styles?.offsetY !== null ? center.y + (styles?.offsetY || 0) : center.y + (hiCardStyles?.height || 288) + 32
 	}
+
+	// 手机上改为全宽，固定在页面底部
+	let mobileWidth = styles?.width || 360
+	let mobileHeight = styles?.height || 400
+	if (maxSM) {
+		position.x = 8
+		position.y = windowHeight - 480
+		mobileWidth = windowWidth - 16
+		mobileHeight = 400
+	}
+
+	const cardWidth = maxSM ? mobileWidth : (styles?.width || 360)
+	const cardHeight = maxSM ? mobileHeight : (styles?.height || 400)
 
 	useEffect(() => {
 		setShow(true)
@@ -103,14 +128,15 @@ export default function RssReader() {
 	const displayItems = currentFeed?.items.slice(0, 10) || []
 
 	return (
-		<HomeDraggableLayer cardKey='rssReader' x={position.x} y={position.y} width={styles?.width || 360} height={styles?.height || 400}>
-<Card
-			order={styles?.order || 9}
-			width={styles?.width || 360}
-			height={styles?.height || 400}
-			x={position.x}
-			y={position.y}>
-			{siteContent.enableChristmas && (
+		<HomeDraggableLayer cardKey='rssReader' x={position.x} y={position.y} width={cardWidth} height={cardHeight}>
+			<Card
+				order={styles?.order || 9}
+				width={cardWidth}
+				height={cardHeight}
+				x={position.x}
+				y={position.y}
+				className={maxSM ? 'max-sm:static' : ''}
+			>
 				<>
 					<img src='/images/christmas/snow-5.webp' alt='Christmas decoration' className='pointer-events-none absolute' style={{ width: 60, left: 2, bottom: 2, opacity: 0.6 }} />
 					<img src='/images/christmas/snow-6.webp' alt='Christmas decoration' className='pointer-events-none absolute' style={{ width: 80, right: -4, top: -10, opacity: 0.6 }} />
