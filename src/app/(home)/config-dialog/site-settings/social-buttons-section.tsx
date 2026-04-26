@@ -230,13 +230,17 @@ export function SocialButtonsSection({ formData, setFormData, socialButtonImageU
 								)}
 							</div>
 						) : (
-							<input
-								type={button.type === 'email' ? 'email' : 'url'}
-								value={button.value}
-								onChange={e => handleUpdateButton(button.id, { value: e.target.value })}
-								placeholder={button.type === 'email' ? 'example@email.com' : 'https://example.com'}
-								className='bg-secondary/10 flex-1 rounded-lg border px-3 py-1.5 text-xs'
-							/>
+							<>
+								{button.type !== 'email' && button.type !== 'link' && (
+									<input
+										type={button.type === 'email' ? 'email' : 'url'}
+										value={button.value}
+										onChange={e => handleUpdateButton(button.id, { value: e.target.value })}
+										placeholder={button.type === 'email' ? 'example@email.com' : 'https://example.com'}
+										className='bg-secondary/10 flex-1 rounded-lg border px-3 py-1.5 text-xs'
+									/>
+								)}
+							</>
 						)}
 						{button.type === 'email' && (
 							<input
