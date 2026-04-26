@@ -29,6 +29,7 @@ interface SocialButtonConfig {
 	type: SocialButtonType
 	value: string
 	label?: string
+	icon?: string
 	order: number
 }
 
@@ -49,7 +50,7 @@ export function SocialButtonsSection({ formData, setFormData, socialButtonImageU
 			id: newId,
 			type: 'link' as const,
 			value: '',
-			label: '',
+			icon: '',
 			order: buttons.length + 1
 		}
 		setFormData(prev => ({
@@ -237,7 +238,34 @@ export function SocialButtonsSection({ formData, setFormData, socialButtonImageU
 								className='bg-secondary/10 flex-1 rounded-lg border px-3 py-1.5 text-xs'
 							/>
 						)}
-						{button.type !== 'email' && button.type !== 'wechat' && button.type !== 'qq' && (
+						{button.type === 'email' && (
+							<input
+								type='text'
+								value={button.value}
+								onChange={e => handleUpdateButton(button.id, { value: e.target.value })}
+								placeholder='example@email.com'
+								className='bg-secondary/10 flex-1 rounded-lg border px-3 py-1.5 text-xs'
+							/>
+						)}
+						{button.type === 'link' && (
+							<input
+								type='text'
+								value={button.value}
+								onChange={e => handleUpdateButton(button.id, { value: e.target.value })}
+								placeholder='https://example.com'
+								className='bg-secondary/10 flex-1 rounded-lg border px-3 py-1.5 text-xs'
+							/>
+						)}
+						{button.type === 'link' && (
+							<input
+								type='text'
+								value={button.icon || ''}
+								onChange={e => handleUpdateButton(button.id, { icon: e.target.value })}
+								placeholder='图标URL（可选）'
+								className='bg-secondary/10 w-36 rounded-lg border px-3 py-1.5 text-xs'
+							/>
+						)}
+						{button.type !== 'email' && button.type !== 'link' && button.type !== 'wechat' && button.type !== 'qq' && (
 							<input
 								type='text'
 								value={button.label || ''}
