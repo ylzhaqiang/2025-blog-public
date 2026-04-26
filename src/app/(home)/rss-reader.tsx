@@ -62,7 +62,7 @@ export default function RssReader() {
 			fetchFeed(feeds[index].url).then(data => {
 				setFeeds(prev => prev.map((f, i) => i === index ? {
 					...f,
-					title: data.feed?.title || '',
+					title: f.title,
 					items: data.items || [],
 					loading: false
 				} : f))
