@@ -127,6 +127,13 @@ export default function NavCard() {
 	// Left sidebar for all pages (always visible alongside other nav forms)
 	const showLeftSidebar = true
 
+	const handlePasswordSuccess = () => {
+		if (pendingHref) {
+			router.push(pendingHref)
+			setPendingHref(null)
+		}
+	}
+
 	// Left sidebar mode
 	if (showLeftSidebar && show) {
 		return (
@@ -179,13 +186,6 @@ export default function NavCard() {
 	}
 
 	if (maxSM) position = { x: center.x - size.width / 2, y: 16 }
-
-	const handlePasswordSuccess = () => {
-		if (pendingHref) {
-			router.push(pendingHref)
-			setPendingHref(null)
-		}
-	}
 
 	if (show && form !== 'full')
 		return (
