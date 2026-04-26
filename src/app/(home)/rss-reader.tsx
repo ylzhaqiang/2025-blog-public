@@ -104,13 +104,19 @@ export default function RssReader() {
 
 	return (
 		<HomeDraggableLayer cardKey='rssReader' x={position.x} y={position.y} width={styles?.width || 360} height={styles?.height || 400}>
-			<Card
-				order={styles?.order || 9}
-				width={styles?.width || 360}
-				height={styles?.height || 400}
-				x={position.x}
-				y={position.y}>
-				<div className='flex h-full flex-col p-4 pt-2'>
+<Card
+			order={styles?.order || 9}
+			width={styles?.width || 360}
+			height={styles?.height || 400}
+			x={position.x}
+			y={position.y}>
+			{siteContent.enableChristmas && (
+				<>
+					<img src='/images/christmas/snow-5.webp' alt='Christmas decoration' className='pointer-events-none absolute' style={{ width: 60, left: 2, bottom: 2, opacity: 0.6 }} />
+					<img src='/images/christmas/snow-6.webp' alt='Christmas decoration' className='pointer-events-none absolute' style={{ width: 80, right: -4, top: -10, opacity: 0.6 }} />
+				</>
+			)}
+			<div className='flex h-full flex-col p-4 pt-2'>
 					{/* Feed Tabs */}
 					{feeds.length > 1 && (
 						<div className='mb-2 flex flex-wrap gap-1'>

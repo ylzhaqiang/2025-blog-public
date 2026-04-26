@@ -30,6 +30,7 @@ export default function MusicCard() {
 	const [progress, setProgress] = useState(0)
 	const [showList, setShowList] = useState(false)
 	const audioRef = useRef<HTMLAudioElement | null>(null)
+	const shouldPlayRef = useRef(false)
 	const currentIndexRef = useRef(0)
 
 	const isHomePage = pathname === '/'
@@ -57,11 +58,11 @@ export default function MusicCard() {
 			x: styles.offsetX !== null ? center.x + styles.offsetX : center.x + CARD_SPACING + hiCardStyles.width / 2 - styles.offset,
 			y: styles.offsetY !== null ? center.y + styles.offsetY : center.y - clockCardStyles.offset + CARD_SPACING + calendarCardStyles.height + CARD_SPACING
 		}
-	}, [isPlaying, isHomePage, center, styles, hiCardStyles, clockCardStyles, calendarCardStyles])
+	}, [isHomePage, center, styles, hiCardStyles, clockCardStyles, calendarCardStyles])
 
 	const { x, y } = position
 
-	// Initialize audio
+	// Initialize audio element once
 	useEffect(() => {
 		if (!audioRef.current) {
 			audioRef.current = new Audio()
@@ -76,10 +77,14 @@ export default function MusicCard() {
 
 		const handleEnded = () => {
 			if (musicList.length === 0) return
-			const nextIndex = (currentIndexRef.current + 1) % musicList.length
-			currentIndexRef.current = nextIndex
-			setCurrentIndex(nextIndex)
+			const next = (currentIndexRef.current + 1) % musicList.length
+			currentIndexRef.current = next
+			setCurrentIndex(next)
 			setProgress(0)
+			shouldPlayRef.current = true
+			// 直接播放下一首
+			audio.src = musicList[next].file
+			audio.play().catch(console.error)
 		}
 
 		audio.addEventListener('timeupdate', updateProgress)
@@ -91,35 +96,28 @@ export default function MusicCard() {
 			audio.removeEventListener('ended', handleEnded)
 			audio.removeEventListener('loadedmetadata', updateProgress)
 		}
-	}, [musicList.length])
+	}, [musicList.length, musicList])
 
-	// Load new track
+	// Load track when currentIndex changes
 	useEffect(() => {
 		if (musicList.length === 0) return
 		currentIndexRef.current = currentIndex
-		if (audioRef.current) {
-			const wasPlaying = !audioRef.current.paused
-			audioRef.current.pause()
-			audioRef.current.src = musicList[currentIndex].file
-			audioRef.current.loop = false
-			setProgress(0)
-			if (wasPlaying) {
-				audioRef.current.play().catch(console.error)
-			}
+		if (!audioRef.current) return
+
+		const audio = audioRef.current
+		audio.pause()
+		audio.src = musicList[currentIndex].file
+		audio.loop = false
+		setProgress(0)
+
+		if (shouldPlayRef.current) {
+			shouldPlayRef.current = false
+			audio.play().catch(console.error)
+			setIsPlaying(true)
 		}
 	}, [currentIndex, musicList])
 
-	// Handle play/pause
-	useEffect(() => {
-		if (!audioRef.current || musicList.length === 0) return
-		if (isPlaying) {
-			audioRef.current.play().catch(console.error)
-		} else {
-			audioRef.current.pause()
-		}
-	}, [isPlaying, musicList.length])
-
-	// Cleanup
+	// Cleanup on unmount
 	useEffect(() => {
 		return () => {
 			if (audioRef.current) {
@@ -130,24 +128,48 @@ export default function MusicCard() {
 	}, [])
 
 	const togglePlayPause = useCallback(() => {
-		setIsPlaying(p => !p)
-	}, [])
+		if (musicList.length === 0) return
+		if (!audioRef.current || !audioRef.current.src) {
+			// 还没选过歌，先选第一首
+			setCurrentIndex(0)
+			shouldPlayRef.current = true
+			setIsPlaying(true)
+			return
+		}
+		setIsPlaying(p => {
+			const next = !p
+			if (next) {
+				audioRef.current?.play().catch(console.error)
+			} else {
+				audioRef.current?.pause()
+			}
+			return next
+		})
+	}, [musicList.length])
 
 	const goNext = useCallback(() => {
 		if (musicList.length === 0) return
-		setCurrentIndex(i => (i + 1) % musicList.length)
-	}, [musicList.length])
+		const next = (currentIndexRef.current + 1) % musicList.length
+		currentIndexRef.current = next
+		setCurrentIndex(next)
+		shouldPlayRef.current = isPlaying
+	}, [musicList.length, isPlaying])
 
 	const goPrev = useCallback(() => {
 		if (musicList.length === 0) return
-		setCurrentIndex(i => (i - 1 + musicList.length) % musicList.length)
-	}, [musicList.length])
+		const prev = (currentIndexRef.current - 1 + musicList.length) % musicList.length
+		currentIndexRef.current = prev
+		setCurrentIndex(prev)
+		shouldPlayRef.current = isPlaying
+	}, [musicList.length, isPlaying])
 
 	const selectTrack = useCallback((index: number) => {
+		currentIndexRef.current = index
 		setCurrentIndex(index)
+		shouldPlayRef.current = true
+		setIsPlaying(true)
 		setShowList(false)
-		if (!isPlaying) setIsPlaying(true)
-	}, [isPlaying])
+	}, [])
 
 	if (!isHomePage && !isPlaying) return null
 

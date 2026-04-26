@@ -32,6 +32,12 @@ export default function BeianCard() {
   return (
     <HomeDraggableLayer cardKey='beianCard' x={x} y={y} width={styles.width} height={styles.height}>
       <Card order={styles.order} width={styles.width} height={styles.height} x={x} y={y} className='flex items-center justify-center max-sm:static'>
+        {siteContent.enableChristmas && (
+          <>
+            <img src='/images/christmas/snow-5.webp' alt='Christmas decoration' className='pointer-events-none absolute' style={{ width: 60, left: 2, bottom: 2, opacity: 0.6 }} />
+            <img src='/images/christmas/snow-6.webp' alt='Christmas decoration' className='pointer-events-none absolute' style={{ width: 80, right: -4, top: -10, opacity: 0.6 }} />
+          </>
+        )}
         <div className="flex items-center justify-center gap-1.5 w-full px-2">
           {/* ICP备案号 */}
           {icp.text && (

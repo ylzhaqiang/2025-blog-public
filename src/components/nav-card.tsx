@@ -144,13 +144,13 @@ export default function NavCard() {
 					onSuccess={handlePasswordSuccess}
 					onCancel={() => setPendingHref(null)}
 				/>
-				<nav
-					className='fixed left-0 top-1/2 -translate-y-1/2 z-50 flex h-auto w-16 flex-col items-center gap-3 border-r border-border/50 bg-background/80 backdrop-blur-sm py-4'
-					aria-label='站内外导航'
-				>
+			<nav
+				className='fixed left-0 top-1/2 -translate-y-1/2 z-50 flex h-auto w-24 flex-col items-center gap-3 border-r border-border/50 bg-background/80 backdrop-blur-sm py-4'
+				aria-label='站内外导航'
+			>
 				{/* Logo */}
-				<Link href='/' className='mb-6 flex flex-col items-center gap-1'>
-					<Image src='/images/avatar.png' alt='avatar' width={36} height={36} className='rounded-full' style={{ boxShadow: '0 8px 16px -4px rgba(0,0,0,0.15)' }} />
+				<Link href='/' className='mb-8 flex flex-col items-center gap-1'>
+					<Image src='/images/avatar.png' alt='avatar' width={54} height={54} className='rounded-full' style={{ boxShadow: '0 8px 16px -4px rgba(0,0,0,0.15)' }} />
 				</Link>
 
 				{/* Nav items */}
@@ -159,7 +159,7 @@ export default function NavCard() {
 						className='absolute left-1.5 rounded-full border border-border/60 bg-card'
 						layoutId='nav-hover'
 						initial={false}
-						animate={{ top: hoveredIndex * 56, left: 0, width: 'calc(100% - 12px)', height: 48 }}
+						animate={{ top: hoveredIndex * 84, left: 0, width: 'calc(100% - 12px)', height: 72 }}
 						transition={{ type: 'spring', stiffness: 400, damping: 30 }}
 					/>
 					{list.map((item, index) => (
@@ -169,14 +169,14 @@ export default function NavCard() {
 							onMouseEnter={() => setHoveredIndex(index)}
 							onMouseLeave={() => setHoveredIndex(activeIndex ?? 0)}
 							className={cn(
-								'relative z-10 flex h-12 w-12 flex-col items-center justify-center gap-1 rounded-full transition-colors cursor-pointer',
+								'relative z-10 flex h-[72px] w-[72px] flex-col items-center justify-center gap-1 rounded-full transition-colors cursor-pointer',
 								activeIndex === index ? 'text-primary' : 'text-secondary hover:text-primary'
 							)}
 						>
 							{activeIndex === index
-								? <item.iconActive className='h-6 w-6' />
-								: <item.icon className='h-6 w-6' />}
-							<span className='text-[9px] font-medium leading-none'>{item.label}</span>
+								? <item.iconActive className='h-9 w-9' />
+								: <item.icon className='h-9 w-9' />}
+							<span className='text-[10px] font-medium leading-none'>{item.label}</span>
 						</button>
 					))}
 				</div>

@@ -53,7 +53,7 @@ export default function ArticleCard() {
 								<Link
 									key={`${blog.slug}-${i}`}
 									href={`/blog/${blog.slug}`}
-									className='flex shrink-0 flex-col flex-shrink-0 rounded-xl border border-transparent bg-white/40 p-2 transition-all hover:border-brand/30 hover:bg-white/60'
+									className='flex shrink-0 flex-col rounded-xl border border-transparent bg-white/40 p-2 transition-all hover:border-brand/30 hover:bg-white/60'
 									style={{ width: 140 }}>
 									{blog.cover ? (
 										<img src={blog.cover} alt='cover' className='h-20 w-full rounded-lg border object-cover' />
@@ -61,7 +61,7 @@ export default function ArticleCard() {
 										<div className='text-secondary flex h-20 w-full items-center justify-center rounded-lg bg-white/60 text-xs'>无封面</div>
 									)}
 									<div className='mt-2'>
-										<h3 className='line-clamp-2 text-xs font-medium'>{blog.title || blog.slug}</h3>
+										<h3 className='truncate text-xs font-medium'>{blog.title || blog.slug}</h3>
 										<p className='text-secondary mt-1 text-[10px]'>{dayjs(blog.date).format('YYYY/M/D')}</p>
 									</div>
 								</Link>
