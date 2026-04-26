@@ -34,14 +34,16 @@ async function fetchFeed(url: string): Promise<{ status: string; feed?: { title:
 export default function RssReader() {
 	const { cardStyles, siteContent } = useConfigStore()
 	const styles = cardStyles.rssReader
-	const show = siteContent.enableRssReader
+	const hiCardStyles = cardStyles.hiCard
+	const show = cardStyles.rssReader?.enabled !== false
 	const center = useCenterStore()
 
 	const [feeds, setFeeds] = useState<Feed[]>([])
 	const [currentFeedIndex, setCurrentFeedIndex] = useState(0)
 	const fetchFeedRef = useRef<Record<number, boolean>>({})
 
-	const position = { x: 0, y: 0 }
+	const x = styles?.offsetX !== null ? center.x + styles.offsetX : center.x - hiCardStyles.width / 2 - (styles?.width || 360) - CARD_SPACING
+	const y = styles?.offsetY !== null ? center.y + styles.offsetY : center.y + hiCardStyles.height / 2 + CARD_SPACING
 
 	const currentFeed = feeds[currentFeedIndex]
 
@@ -77,13 +79,13 @@ export default function RssReader() {
 	if (!show || styles?.enabled === false) return null
 
 	return (
-		<HomeDraggableLayer cardKey='rssReader' x={position.x} y={position.y} width={styles?.width || 360} height={styles?.height || 400}>
+		<HomeDraggableLayer cardKey='rssReader' x={x} y={y} width={styles?.width || 360} height={styles?.height || 400}>
 			<Card
 				order={styles?.order || 9}
 				width={styles?.width || 360}
 				height={styles?.height || 400}
-				x={position.x}
-				y={position.y}
+				x={x}
+				y={y}
 			>
 				{siteContent.enableChristmas && (
 					<>
