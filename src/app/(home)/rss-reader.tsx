@@ -1,10 +1,11 @@
 'use client'
 
 import { useState, useEffect, useRef } from 'react'
-import { HomeDraggableLayer } from './home-draggable-layer'
 import Card from '@/components/card'
-import { useSiteContent } from '@/contexts/data-context'
-import { useSize } from '@/hooks/use-size'
+import { useConfigStore } from './stores/config-store'
+import { useCenterStore } from '@/hooks/use-center'
+import { CARD_SPACING } from '@/consts'
+import { HomeDraggableLayer } from './home-draggable-layer'
 
 interface FeedItem {
 	title: string
@@ -31,29 +32,16 @@ async function fetchFeed(url: string): Promise<{ status: string; feed?: { title:
 }
 
 export default function RssReader() {
-	const { siteContent } = useSiteContent()
-	const { maxSM } = useSize()
-	const styles = siteContent.rssReader
+	const { cardStyles, siteContent } = useConfigStore()
+	const styles = cardStyles.rssReader
 	const show = siteContent.enableRssReader
+	const center = useCenterStore()
 
 	const [feeds, setFeeds] = useState<Feed[]>([])
 	const [currentFeedIndex, setCurrentFeedIndex] = useState(0)
-	const [position, setPosition] = useState({ x: 0, y: 0 })
-
 	const fetchFeedRef = useRef<Record<number, boolean>>({})
 
-	// Window size state for mobile
-	const [windowHeight, setWindowHeight] = useState(800)
-	const [windowWidth, setWindowWidth] = useState(400)
-
-	useEffect(() => {
-		setWindowHeight(window.innerHeight)
-		setWindowWidth(window.innerWidth)
-	}, [])
-
-	// Compute card dimensions
-	const cardWidth = maxSM ? windowWidth - 16 : (styles?.width || 360)
-	const cardHeight = maxSM ? 480 : (styles?.height || 400)
+	const position = { x: 0, y: 0 }
 
 	const currentFeed = feeds[currentFeedIndex]
 
@@ -63,53 +51,25 @@ export default function RssReader() {
 		setFeeds(styles.feeds.map((url: string) => ({ url, title: '', items: [], loading: true })))
 	}, [styles?.feeds])
 
-	// Fetch each feed
+	// Fetch all feeds on mount
 	useEffect(() => {
-		feeds.forEach((feed, index) => {
-			if (fetchFeedRef.current[index] || !feed.loading) return
+		if (feeds.length === 0) return
+		feeds.forEach((_, index) => {
+			if (fetchFeedRef.current[index]) return
 			fetchFeedRef.current[index] = true
-			setFeeds(prev => prev.map((f, i) => i === index ? { ...f, loading: true } : f))
-			fetchFeed(feed.url).then(data => {
+			fetchFeed(feeds[index].url).then(data => {
 				setFeeds(prev => prev.map((f, i) => i === index ? {
 					...f,
 					title: data.feed?.title || '',
 					items: data.items || [],
-					loading: false,
-					error: undefined
-				} : f))
-			}).catch(() => {
-				setFeeds(prev => prev.map((f, i) => i === index ? {
-					...f,
-					error: '加载失败',
 					loading: false
 				} : f))
+			}).catch(() => {
+				setFeeds(prev => prev.map((f, i) => i === index ? { ...f, loading: false, error: '加载失败' } : f))
 			}).finally(() => {
 				fetchFeedRef.current[index] = false
 			})
 		})
-	}, [feeds.length])
-
-	// Fetch all feeds on mount
-	useEffect(() => {
-		if (feeds.length > 0) {
-			feeds.forEach((_, index) => {
-				if (!fetchFeedRef.current[index] && feeds[index].loading) {
-					fetchFeedRef.current[index] = true
-					fetchFeed(feeds[index].url).then(data => {
-						setFeeds(prev => prev.map((f, i) => i === index ? {
-							...f,
-							title: data.feed?.title || '',
-							items: data.items || [],
-							loading: false
-						} : f))
-					}).catch(() => {
-						setFeeds(prev => prev.map((f, i) => i === index ? { ...f, loading: false, error: '加载失败' } : f))
-					}).finally(() => {
-						fetchFeedRef.current[index] = false
-					})
-				}
-			})
-		}
 	}, [feeds.length])
 
 	const displayItems = currentFeed?.items.slice(0, 10) || []
@@ -117,14 +77,13 @@ export default function RssReader() {
 	if (!show || styles?.enabled === false) return null
 
 	return (
-		<HomeDraggableLayer cardKey='rssReader' x={position.x} y={position.y} width={cardWidth} height={cardHeight}>
+		<HomeDraggableLayer cardKey='rssReader' x={position.x} y={position.y} width={styles?.width || 360} height={styles?.height || 400}>
 			<Card
 				order={styles?.order || 9}
-				width={cardWidth}
-				height={cardHeight}
+				width={styles?.width || 360}
+				height={styles?.height || 400}
 				x={position.x}
 				y={position.y}
-				className={maxSM ? 'max-sm:static' : ''}
 			>
 				{siteContent.enableChristmas && (
 					<>
@@ -201,5 +160,3 @@ export default function RssReader() {
 		</HomeDraggableLayer>
 	)
 }
-
-export default RssReader
