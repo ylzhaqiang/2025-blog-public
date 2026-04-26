@@ -94,24 +94,6 @@ export default function RssReader() {
 					</>
 				)}
 				<div className='flex h-full flex-col p-4 pt-2'>
-					{/* Header */}
-					<div className='mb-2 flex items-center justify-between'>
-						<h3 className='text-lg font-bold text-primary'>
-							{currentFeed?.title || 'RSS 阅读器'}
-						</h3>
-						<div className='flex gap-1'>
-							{feeds.map((_, index) => (
-								<button
-									key={index}
-									onClick={() => setCurrentFeedIndex(index)}
-									className={`h-2 w-2 rounded-full transition-colors ${
-										index === currentFeedIndex ? 'bg-brand' : 'bg-white/40'
-									}`}
-								/>
-							))}
-						</div>
-					</div>
-
 					{/* Content */}
 					<div className='min-h-0 flex-1 overflow-y-auto'>
 						{currentFeed?.loading ? (
