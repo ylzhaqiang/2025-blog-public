@@ -49,9 +49,9 @@ export default function RssReader() {
 
 	// Initialize feeds from config
 	useEffect(() => {
-		if (!styles?.feeds || styles.feeds.length === 0) return
-		setFeeds(styles.feeds.map((url: string) => ({ url, title: '', items: [], loading: true })))
-	}, [styles?.feeds])
+		if (!siteContent.rssFeeds || siteContent.rssFeeds.length === 0) return
+		setFeeds(siteContent.rssFeeds.map((f: { url: string; title: string }) => ({ url: f.url, title: f.title, items: [], loading: true })))
+	}, [siteContent.rssFeeds])
 
 	// Fetch all feeds on mount
 	useEffect(() => {
