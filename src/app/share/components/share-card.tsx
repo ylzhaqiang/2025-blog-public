@@ -62,6 +62,25 @@ export function ShareCard({ share, isEditMode = false, onUpdate, onDelete }: Sha
 
 	const canEdit = isEditMode && isEditing
 
+	// 非编辑模式：紧凑显示
+	if (!canEdit) {
+		return (
+			<motion.a
+				href={share.url}
+				target='_blank'
+				rel='noopener noreferrer'
+				initial={{ opacity: 0, scale: 0.6 }}
+				{...(maxSM ? { animate: { opacity: 1, scale: 1 } } : { whileInView: { opacity: 1, scale: 1 } })}
+				className='card relative block overflow-hidden' style={{ textDecoration: 'none' }}>
+				<div className='flex items-center gap-2 p-2'>
+					<img src={localShare.logo} alt={localShare.name} className='h-10 w-10 rounded-lg object-cover' />
+					<span className='text-sm font-medium text-foreground truncate'>{localShare.name}</span>
+				</div>
+			</motion.a>
+		)
+	}
+
+	// 编辑模式：完整界面
 	return (
 		<motion.div
 			initial={{ opacity: 0, scale: 0.6 }}
