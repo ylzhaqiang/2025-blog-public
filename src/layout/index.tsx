@@ -8,9 +8,12 @@ import { CircleCheckIcon, InfoIcon, Loader2Icon, OctagonXIcon, TriangleAlertIcon
 import { useSize, useSizeInit } from '@/hooks/use-size'
 import { useConfigStore } from '@/app/(home)/stores/config-store'
 import { ScrollTopButton } from '@/components/scroll-top-button'
+import { usePathname } from 'next/navigation'
 import MusicCard from '@/components/music-card'
 
 export default function Layout({ children }: PropsWithChildren) {
+	const pathname = usePathname()
+	const isHome = pathname === '/'
 	useCenterInit()
 	useSizeInit()
 	const { cardStyles, siteContent, regenerateKey } = useConfigStore()
@@ -52,7 +55,7 @@ export default function Layout({ children }: PropsWithChildren) {
 			)}
 			<BlurredBubblesBackground colors={siteContent.backgroundColors} regenerateKey={regenerateKey} />
 
-			<main className='relative z-10 h-full'>
+			<main className={isHome ? 'relative z-10 h-full' : 'relative z-10 h-full pl-16'}>
 				{children}
 				<NavCard />
 
