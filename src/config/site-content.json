@@ -67,14 +67,16 @@
 			"type": "link",
 			"value": "https://lucky.221107.xyz",
 			"label": "lucky",
-			"order": 4
+			"order": 4,
+			"icon": "/images/lucky.png"
 		},
 		{
 			"id": "button-1777167307510",
 			"type": "link",
 			"value": "https://fnos.724782.xyz:1977",
 			"label": "fnos",
-			"order": 5
+			"order": 5,
+			"icon": "/images/fnnas.jpg"
 		}
 	],
 	"clockShowSeconds": false,
