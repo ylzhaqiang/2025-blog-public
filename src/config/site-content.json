@@ -50,15 +50,15 @@
 		},
 		{
 			"id": "email",
-			"type": "email",
-			"value": "zhaqiang1001@163.com",
+			"type": "x",
+			"value": "https://youqian.360.cn/score.html#score",
 			"label": "",
 			"order": 2
 		},
 		{
 			"id": "button-1767877932636",
-			"type": "qq",
-			"value": "7894044",
+			"type": "bilibili",
+			"value": "https://www.bilibili.com/?spm_id_from=333.1365.0.0",
 			"label": "",
 			"order": 3
 		},
@@ -68,7 +68,7 @@
 			"value": "https://lucky.221107.xyz",
 			"label": "lucky",
 			"order": 4,
-			"icon": "/images/lucky.png"
+			"icon": "/images/Lucky.png"
 		},
 		{
 			"id": "button-1777167307510",
