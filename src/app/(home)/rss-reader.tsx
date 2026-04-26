@@ -1,9 +1,9 @@
 'use client'
 
-import { useState, useEffect, useRef, useMemo } from 'react'
-import { HomeDraggableLayer } from '@/components/draggable-layer'
-import { Card } from '@/components/card'
-import { useSiteContent, useBlogIndex } from '@/contexts/data-context'
+import { useState, useEffect, useRef } from 'react'
+import { HomeDraggableLayer } from './home-draggable-layer'
+import Card from '@/components/card'
+import { useSiteContent } from '@/contexts/data-context'
 import { useSize } from '@/hooks/use-size'
 
 interface FeedItem {
@@ -30,9 +30,8 @@ async function fetchFeed(url: string): Promise<{ status: string; feed?: { title:
 	return res.json()
 }
 
-export function RssReader() {
+export default function RssReader() {
 	const { siteContent } = useSiteContent()
-	const { blogIndex } = useBlogIndex()
 	const { maxSM } = useSize()
 	const styles = siteContent.rssReader
 	const show = siteContent.enableRssReader
