@@ -22,16 +22,16 @@ export default function ArticleCard() {
 
 	return (
 		<HomeDraggableLayer cardKey='articleCard' x={x} y={y} width={styles.width} height={styles.height}>
-			<Card order={styles.order} width={styles.width} height={styles.height} x={x} y={y} className='space-y-2 max-sm:static'>
+			<Card order={styles.order} width={styles.width} height={styles.height} x={x} y={y} className='max-sm:static'>
 				<style>{`
 					@keyframes auto-scroll {
 						0% { transform: translateX(0); }
 						100% { transform: translateX(-50%); }
 					}
-					.scroll-container:hover .scroll-content {
+					.article-scroll:hover .article-scroll-content {
 						animation-play-state: paused;
 					}
-					.scroll-content {
+					.article-scroll-content {
 						animation: auto-scroll 30s linear infinite;
 					}
 				`}</style>
@@ -40,36 +40,38 @@ export default function ArticleCard() {
 					<img src='/images/christmas/snow-9.webp' alt='' className='pointer-events-none absolute' style={{ width: 140, left: -12, top: -16, opacity: 0.8 }} />
 				)}
 
-				<h2 className='text-secondary text-sm'>最新文章</h2>
+				<div className='px-4 pt-2'>
+					<h2 className='text-secondary text-sm'>最新文章</h2>
+				</div>
 
 				{loading ? (
-					<div className='flex h-[60px] items-center justify-center'>
+					<div className='flex h-[72px] items-center justify-center'>
 						<span className='text-secondary text-xs'>加载中...</span>
 					</div>
 				) : latestBlogs.length > 0 ? (
-					<div className='scroll-container overflow-hidden' style={{ height: 80 }}>
-						<div className='scroll-content flex gap-3' style={{ width: 'max-content' }}>
+					<div className='article-scroll overflow-hidden px-4 pb-2' style={{ height: 76 }}>
+						<div className='article-scroll-content flex gap-3' style={{ width: 'max-content' }}>
 							{[...latestBlogs, ...latestBlogs].map((blog, i) => (
 								<Link
 									key={`${blog.slug}-${i}`}
 									href={`/blog/${blog.slug}`}
-									className='flex shrink-0 flex-col rounded-xl border border-transparent bg-white/40 p-2 transition-all hover:border-brand/30 hover:bg-white/60'
-									style={{ width: 140 }}>
+									style={{ width: 120, flexShrink: 0 }}
+									className='flex flex-col rounded-xl border border-transparent bg-white/40 p-1.5 transition-all hover:border-brand/30 hover:bg-white/60'>
 									{blog.cover ? (
-										<img src={blog.cover} alt='cover' className='h-20 w-full rounded-lg border object-cover' />
+										<img src={blog.cover} alt='cover' className='rounded-lg border object-cover' style={{ width: '100%', height: 52 }} />
 									) : (
-										<div className='text-secondary flex h-20 w-full items-center justify-center rounded-lg bg-white/60 text-xs'>无封面</div>
+										<div className='flex items-center justify-center rounded-lg bg-white/60 text-xs text-secondary' style={{ height: 52 }}>无封面</div>
 									)}
-									<div className='mt-2'>
-										<h3 className='truncate text-xs font-medium'>{blog.title || blog.slug}</h3>
-										<p className='text-secondary mt-1 text-[10px]'>{dayjs(blog.date).format('YYYY/M/D')}</p>
+									<div style={{ fontSize: 10, marginTop: 4, lineHeight: 1.2 }}>
+										<div className='text-xs font-medium truncate'>{blog.title || blog.slug}</div>
+										<div className='text-secondary text-[10px]'>{dayjs(blog.date).format('YYYY/M/D')}</div>
 									</div>
 								</Link>
 							))}
 						</div>
 					</div>
 				) : (
-					<div className='flex h-[60px] items-center justify-center'>
+					<div className='flex h-[72px] items-center justify-center'>
 						<span className='text-secondary text-xs'>暂无文章</span>
 					</div>
 				)}
