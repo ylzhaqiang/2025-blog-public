@@ -130,10 +130,17 @@ export default function NavCard() {
 	// Left sidebar mode
 	if (showLeftSidebar && show) {
 		return (
-			<nav
-				className='fixed left-0 top-1/2 -translate-y-1/2 z-50 flex h-auto w-16 flex-col items-center gap-3 border-r border-border/50 bg-background/80 backdrop-blur-sm py-4'
-				aria-label='站内外导航'
-			>
+			<>
+				<PasswordDialog
+					open={pendingHref !== null}
+					password={protection?.password || ''}
+					onSuccess={handlePasswordSuccess}
+					onCancel={() => setPendingHref(null)}
+				/>
+				<nav
+					className='fixed left-0 top-1/2 -translate-y-1/2 z-50 flex h-auto w-16 flex-col items-center gap-3 border-r border-border/50 bg-background/80 backdrop-blur-sm py-4'
+					aria-label='站内外导航'
+				>
 				{/* Logo */}
 				<Link href='/' className='mb-6 flex flex-col items-center gap-1'>
 					<Image src='/images/avatar.png' alt='avatar' width={36} height={36} className='rounded-full' style={{ boxShadow: '0 8px 16px -4px rgba(0,0,0,0.15)' }} />
@@ -167,6 +174,7 @@ export default function NavCard() {
 					))}
 				</div>
 			</nav>
+			</>
 		)
 	}
 
