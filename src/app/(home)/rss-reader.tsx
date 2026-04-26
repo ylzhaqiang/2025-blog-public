@@ -1,10 +1,10 @@
 'use client'
 
 import { useState, useEffect, useRef, useMemo } from 'react'
-import { HomeDraggableLayer } from '~/components/draggable-layer'
-import { Card } from '~/components/card'
-import { useSiteContent, useBlogIndex } from '~/contexts/data-context'
-import { useSize } from '~/hooks/use-size'
+import { HomeDraggableLayer } from '@/components/draggable-layer'
+import { Card } from '@/components/card'
+import { useSiteContent, useBlogIndex } from '@/contexts/data-context'
+import { useSize } from '@/hooks/use-size'
 
 interface FeedItem {
 	title: string
@@ -65,7 +65,7 @@ export function RssReader() {
 	}, [styles?.feeds])
 
 	// Fetch each feed
-	const loadFeed = useEffect(() => {
+	useEffect(() => {
 		feeds.forEach((feed, index) => {
 			if (fetchFeedRef.current[index] || !feed.loading) return
 			fetchFeedRef.current[index] = true
@@ -202,3 +202,5 @@ export function RssReader() {
 		</HomeDraggableLayer>
 	)
 }
+
+export default RssReader
