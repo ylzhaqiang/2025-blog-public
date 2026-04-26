@@ -2,7 +2,7 @@
 	{
 		"name": "政府定点采购网",
 		"logo": "https://nasicon.top/icon/Busybox--BusyBox--busybox.net.png",
-		"url": "https://wssc.hubeigp.gov.cn/upgrade/home?site_id=%20421182",
+		"url": "https://wssc.hbggzy.cn/home",
 		"description": "政府定点采购网",
 		"tags": [
 			"常用"
@@ -31,7 +31,7 @@
 	},
 	{
 		"name": "观影",
-		"logo": "https://www.gying.si/favicon.ico",
+		"logo": "https://www.gying.net/favicon.ico",
 		"url": "https://www.gying.net",
 		"description": "观影",
 		"tags": [
@@ -84,6 +84,46 @@
 		"logo": "https://www.ra2web.com/favicon.ico",
 		"url": "https://hongjing.221107.xyz/",
 		"description": "红警网页版",
+		"tags": [
+			"常用"
+		],
+		"stars": 3
+	},
+	{
+		"name": "湖北电子税务局",
+		"logo": "https://static.tpass.chinatax.gov.cn/static/img/login_bottom1.2f9c4f8f.png",
+		"url": "https://tpass.hubei.chinatax.gov.cn:8443/#/login?redirect_uri=https%3A%2F%2Fetax.hubei.chinatax.gov.cn%3A8443%2Fmhzx%2Fapi%2Fmh%2Ftpass%2Fcode&client_id=b6edq5qqc5cb4c3288q6aq6fab5qc3b4&response_type=code&state=b58a517dcbd74a8098db3424afdb98de",
+		"description": "湖北电子税务局",
+		"tags": [
+			"常用"
+		],
+		"stars": 3
+	},
+	{
+		"name": "Javbus",
+		"logo": "https://nasicon.top/icon/Joplin_B.png",
+		"url": "https://www.javbus.com/forum/",
+		"description": "j",
+		"tags": [
+			"常用"
+		],
+		"stars": 3
+	},
+	{
+		"name": "克苏恩社区",
+		"logo": "https://kesuen.am81.cn/favicon.ico",
+		"url": "https://kesuen.am81.cn/user/",
+		"description": "克苏恩社区",
+		"tags": [
+			"常用"
+		],
+		"stars": 3
+	},
+	{
+		"name": "zodgame",
+		"logo": "https://2.nasicon.top/icon/lazyvim.svg",
+		"url": "https://zodgame.xyz/forum.php?mod=forumdisplay&fid=102&page=1&filter=author&orderby=dateline",
+		"description": "zodgame",
 		"tags": [
 			"常用"
 		],
