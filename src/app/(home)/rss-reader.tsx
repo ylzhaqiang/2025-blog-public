@@ -1,131 +1,121 @@
 'use client'
 
-import { useState, useEffect, useCallback, useRef } from 'react'
-import { motion } from 'motion/react'
-import Card from '@/components/card'
-import { useCenterStore } from '@/hooks/use-center'
-import { useConfigStore } from './stores/config-store'
-import { HomeDraggableLayer } from './home-draggable-layer'
-import { useSize } from '@/hooks/use-size'
+import { useState, useEffect, useRef, useMemo } from 'react'
+import { HomeDraggableLayer } from '~/components/draggable-layer'
+import { Card } from '~/components/card'
+import { useSiteContent, useBlogIndex } from '~/contexts/data-context'
+import { useSize } from '~/hooks/use-size'
 
-interface RssItem {
+interface FeedItem {
 	title: string
 	link: string
 	pubDate: string
-	description: string
+	author?: string
+	content?: string
 }
 
-export default function RssReader() {
-	const center = useCenterStore()
-	const { cardStyles, siteContent } = useConfigStore()
-	const { maxSM } = useSize()
-	const styles = cardStyles.rssReader
-	const hiCardStyles = cardStyles.hiCard
+interface Feed {
+	url: string
+	title: string
+	items: FeedItem[]
+	loading: boolean
+	error?: string
+}
 
+const RSS_PARSER_URL = 'https://api.rss2json.com/v1/api.json?rss_url='
+
+async function fetchFeed(url: string): Promise<{ status: string; feed?: { title: string }; items: FeedItem[] }> {
+	const res = await fetch(`${RSS_PARSER_URL}${encodeURIComponent(url)}`)
+	if (!res.ok) throw new Error(`HTTP ${res.status}`)
+	return res.json()
+}
+
+export function RssReader() {
+	const { siteContent } = useSiteContent()
+	const { blogIndex } = useBlogIndex()
+	const { maxSM } = useSize()
+	const styles = siteContent.rssReader
+	const show = siteContent.enableRssReader
+
+	const [feeds, setFeeds] = useState<Feed[]>([])
+	const [currentFeedIndex, setCurrentFeedIndex] = useState(0)
+	const [position, setPosition] = useState({ x: 0, y: 0 })
+
+	const fetchFeedRef = useRef<Record<number, boolean>>({})
+
+	// Window size state for mobile
 	const [windowHeight, setWindowHeight] = useState(800)
 	const [windowWidth, setWindowWidth] = useState(400)
-	const [show, setShow] = useState(false)
 
 	useEffect(() => {
 		setWindowHeight(window.innerHeight)
 		setWindowWidth(window.innerWidth)
 	}, [])
 
+	// Compute card dimensions
+	const cardWidth = maxSM ? windowWidth - 16 : (styles?.width || 360)
+	const cardHeight = maxSM ? 480 : (styles?.height || 400)
+
+	const currentFeed = feeds[currentFeedIndex]
+
+	// Initialize feeds from config
 	useEffect(() => {
-		setShow(true)
-	}, [])
-	const [feeds, setFeeds] = useState<{
-		url: string
-		title: string
-		items: RssItem[]
-		loading: boolean
-		error: string | null
-	}[]>([])
+		if (!styles?.feeds || styles.feeds.length === 0) return
+		setFeeds(styles.feeds.map((url: string) => ({ url, title: '', items: [], loading: true })))
+	}, [styles?.feeds])
 
-	const rssFeeds = siteContent.rssFeeds || []
-
-	const position = {
-		x: styles?.offsetX !== null ? center.x + (styles?.offsetX || 0) : center.x - (styles?.width || 360) / 2,
-		y: styles?.offsetY !== null ? center.y + (styles?.offsetY || 0) : center.y + (hiCardStyles?.height || 288) + 32
-	}
-
-	// 手机上改为全宽，固定在页面底部
-	let mobileWidth = styles?.width || 360
-	let mobileHeight = styles?.height || 400
-	if (maxSM) {
-		position.x = 8
-		position.y = windowHeight - 480
-		mobileWidth = windowWidth - 16
-		mobileHeight = 400
-	}
-
-	const cardWidth = maxSM ? mobileWidth : (styles?.width || 360)
-	const cardHeight = maxSM ? mobileHeight : (styles?.height || 400)
-
-	useEffect(() => {
-		setShow(true)
-	}, [])
-
-	// Initialize feeds
-	useEffect(() => {
-		if (rssFeeds.length > 0) {
-			setFeeds(rssFeeds.map((feed: { url: string; title?: string }) => ({
-				url: feed.url,
-				title: feed.title || feed.url,
-				items: [],
-				loading: false,
-				error: null
-			})))
-		}
-	}, [rssFeeds])
-
-	// Fetch RSS feed - 使用 ref 存储 fetch 函数避免闭包问题
-	const fetchFeedRef = useRef<Record<number, boolean>>({})
-
-	const fetchFeed = useCallback(async (feed: { url: string; title: string }, index: number) => {
-		if (!feed.url || fetchFeedRef.current[index]) return
-		fetchFeedRef.current[index] = true
-
-		setFeeds(prev => prev.map((f, i) => i === index ? { ...f, loading: true, error: null } : f))
-
-		try {
-			const response = await fetch(`/api/rss?url=${encodeURIComponent(feed.url)}`)
-			if (!response.ok) throw new Error('Failed to fetch feed')
-			const data = await response.json()
-
-			setFeeds(prev => prev.map((f, i) => i === index ? {
-				...f,
-				items: data.items || [],
-				loading: false
-			} : f))
-		} catch (error) {
-			setFeeds(prev => prev.map((f, i) => i === index ? {
-				...f,
-				error: '加载失败',
-				loading: false
-			} : f))
-		} finally {
-			fetchFeedRef.current[index] = false
-		}
-	}, [])
+	// Fetch each feed
+	const loadFeed = useEffect(() => {
+		feeds.forEach((feed, index) => {
+			if (fetchFeedRef.current[index] || !feed.loading) return
+			fetchFeedRef.current[index] = true
+			setFeeds(prev => prev.map((f, i) => i === index ? { ...f, loading: true } : f))
+			fetchFeed(feed.url).then(data => {
+				setFeeds(prev => prev.map((f, i) => i === index ? {
+					...f,
+					title: data.feed?.title || '',
+					items: data.items || [],
+					loading: false,
+					error: undefined
+				} : f))
+			}).catch(() => {
+				setFeeds(prev => prev.map((f, i) => i === index ? {
+					...f,
+					error: '加载失败',
+					loading: false
+				} : f))
+			}).finally(() => {
+				fetchFeedRef.current[index] = false
+			})
+		})
+	}, [feeds.length])
 
 	// Fetch all feeds on mount
 	useEffect(() => {
 		if (feeds.length > 0) {
-			feeds.forEach((feed, index) => {
-				if (feed.url && feed.items.length === 0 && !feed.loading) {
-					fetchFeed(feed, index)
+			feeds.forEach((_, index) => {
+				if (!fetchFeedRef.current[index] && feeds[index].loading) {
+					fetchFeedRef.current[index] = true
+					fetchFeed(feeds[index].url).then(data => {
+						setFeeds(prev => prev.map((f, i) => i === index ? {
+							...f,
+							title: data.feed?.title || '',
+							items: data.items || [],
+							loading: false
+						} : f))
+					}).catch(() => {
+						setFeeds(prev => prev.map((f, i) => i === index ? { ...f, loading: false, error: '加载失败' } : f))
+					}).finally(() => {
+						fetchFeedRef.current[index] = false
+					})
 				}
 			})
 		}
-		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [feeds.length])
 
-	const currentFeed = feeds[currentFeedIndex]
+	const displayItems = currentFeed?.items.slice(0, 10) || []
 
 	if (!show || styles?.enabled === false) return null
-
-	const displayItems = currentFeed?.items.slice(0, 10) || []
 
 	return (
 		<HomeDraggableLayer cardKey='rssReader' x={position.x} y={position.y} width={cardWidth} height={cardHeight}>
@@ -137,12 +127,13 @@ export default function RssReader() {
 				y={position.y}
 				className={maxSM ? 'max-sm:static' : ''}
 			>
-				<>
-					<img src='/images/christmas/snow-5.webp' alt='Christmas decoration' className='pointer-events-none absolute' style={{ width: 60, left: 2, bottom: 2, opacity: 0.6 }} />
-					<img src='/images/christmas/snow-6.webp' alt='Christmas decoration' className='pointer-events-none absolute' style={{ width: 80, right: -4, top: -10, opacity: 0.6 }} />
-				</>
-			)}
-			<div className='flex h-full flex-col p-4 pt-2'>
+				{siteContent.enableChristmas && (
+					<>
+						<img src='/images/christmas/snow-5.webp' alt='Christmas decoration' className='pointer-events-none absolute' style={{ width: 60, left: 2, bottom: 2, opacity: 0.6 }} />
+						<img src='/images/christmas/snow-6.webp' alt='Christmas decoration' className='pointer-events-none absolute' style={{ width: 80, right: -4, top: -10, opacity: 0.6 }} />
+					</>
+				)}
+				<div className='flex h-full flex-col p-4 pt-2'>
 					{/* Feed Tabs */}
 					{feeds.length > 1 && (
 						<div className='mb-2 flex flex-wrap gap-1'>
@@ -155,25 +146,39 @@ export default function RssReader() {
 											? 'bg-brand text-white'
 											: 'bg-white/30 text-secondary hover:bg-white/40'
 									}`}>
-									{feed.title}
+									{feed.title || `源 ${index + 1}`}
 								</button>
 							))}
 						</div>
 					)}
 
+					{/* Header */}
+					<div className='mb-2 flex items-center justify-between'>
+						<h3 className='text-lg font-bold text-primary'>
+							{currentFeed?.title || 'RSS 阅读器'}
+						</h3>
+						<div className='flex gap-1'>
+							{feeds.map((_, index) => (
+								<button
+									key={index}
+									onClick={() => setCurrentFeedIndex(index)}
+									className={`h-2 w-2 rounded-full transition-colors ${
+										index === currentFeedIndex ? 'bg-brand' : 'bg-white/40'
+									}`}
+								/>
+							))}
+						</div>
+					</div>
+
 					{/* Content */}
-					<div className='flex-1 overflow-y-auto'>
+					<div className='min-h-0 flex-1 overflow-y-auto'>
 						{currentFeed?.loading ? (
-							<div className='flex h-full items-center justify-center text-secondary text-sm'>
-								加载中...
+							<div className='flex h-full items-center justify-center text-secondary'>
+								<div className='h-8 w-8 animate-spin rounded-full border-2 border-brand border-t-transparent' />
 							</div>
 						) : currentFeed?.error ? (
-							<div className='flex h-full items-center justify-center text-red-500 text-sm'>
-								{currentFeed.error}
-							</div>
-						) : displayItems.length === 0 ? (
-							<div className='flex h-full items-center justify-center text-secondary text-sm'>
-								暂无内容，请先在设置中添加订阅源
+							<div className='flex h-full items-center justify-center text-red-400'>
+								<span>{currentFeed.error}</span>
 							</div>
 						) : (
 							<div className='space-y-2'>
@@ -183,9 +188,10 @@ export default function RssReader() {
 										href={item.link}
 										target='_blank'
 										rel='noopener noreferrer'
-										className='block rounded-lg border border-border/30 bg-white/20 p-2 transition-colors hover:bg-white/30'>
-										<div className='text-sm font-medium line-clamp-1'>{item.title}</div>
-										<div className='text-secondary mt-1 text-xs line-clamp-1'>{item.description}</div>
+										className='block rounded-lg bg-white/20 p-2 transition-colors hover:bg-white/30'
+									>
+										<div className='truncate text-base font-medium text-primary'>{item.title}</div>
+										<div className='mt-0.5 text-xs text-secondary'>{item.pubDate}</div>
 									</a>
 								))}
 							</div>
