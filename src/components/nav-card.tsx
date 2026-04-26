@@ -116,6 +116,49 @@ export default function NavCard() {
 		}
 	}, [hoveredIndex, activeIndex, form])
 
+	// Left sidebar mode for non-home pages
+	if (form === 'icons') {
+		return (
+			<nav
+				className='fixed left-0 top-0 z-50 flex h-dvh w-16 flex-col items-center border-r border-border/50 bg-background/80 backdrop-blur-sm py-4'
+				aria-label='站内外导航'
+			>
+				{/* Logo */}
+				<Link href='/' className='mb-6 flex flex-col items-center gap-1'>
+					<Image src='/images/avatar.png' alt='avatar' width={36} height={36} className='rounded-full' style={{ boxShadow: '0 8px 16px -4px rgba(0,0,0,0.15)' }} />
+				</Link>
+
+				{/* Nav items */}
+				<div className='relative flex flex-1 flex-col gap-3'>
+					<motion.div
+						className='absolute left-1.5 rounded-full border border-border/60 bg-card'
+						layoutId='nav-hover'
+						initial={false}
+						animate={{ top: hoveredIndex * 56, left: 0, width: 'calc(100% - 12px)', height: 48 }}
+						transition={{ type: 'spring', stiffness: 400, damping: 30 }}
+					/>
+					{list.map((item, index) => (
+						<button
+							key={item.href}
+							onClick={() => handleItemClick(item)}
+							onMouseEnter={() => setHoveredIndex(index)}
+							onMouseLeave={() => setHoveredIndex(activeIndex ?? 0)}
+							className={cn(
+								'relative z-10 flex h-12 w-12 flex-col items-center justify-center gap-1 rounded-full transition-colors cursor-pointer',
+								activeIndex === index ? 'text-primary' : 'text-secondary hover:text-primary'
+							)}
+						>
+							{activeIndex === index
+								? <item.iconActive className='h-6 w-6' />
+								: <item.icon className='h-6 w-6' />}
+							<span className='text-[9px] font-medium leading-none'>{item.label}</span>
+						</button>
+					))}
+				</div>
+			</nav>
+		)
+	}
+
 	if (maxSM) position = { x: center.x - size.width / 2, y: 16 }
 
 	const handleItemClick = (item: (typeof list)[number]) => {
