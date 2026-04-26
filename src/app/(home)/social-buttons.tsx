@@ -15,6 +15,7 @@ import XiaohongshuSVG from '@/svgs/小红书.svg'
 import ZhihuSVG from '@/svgs/知乎.svg'
 import BilibiliSVG from '@/svgs/哔哩哔哩.svg'
 import QqSVG from '@/svgs/qq.svg'
+import LinkSVG from '@/svgs/website-outline.svg'
 import { motion, AnimatePresence } from 'motion/react'
 import { useEffect, useState, useMemo, useRef } from 'react'
 import type React from 'react'
@@ -45,6 +46,7 @@ interface SocialButtonConfig {
 	type: SocialButtonType
 	value: string
 	label?: string
+	icon?: string
 	order: number
 }
 
@@ -124,7 +126,7 @@ export default function SocialButtons() {
 		zhihu: ZhihuSVG,
 		bilibili: BilibiliSVG,
 		qq: QqSVG,
-		link: () => null
+		link: LinkSVG
 	}
 
 	const renderButton = (button: SocialButtonConfig) => {
@@ -233,14 +235,25 @@ export default function SocialButtons() {
 		}
 
 		if (button.type === 'link') {
+			const linkIconSize = hasLabel ? 'size-6' : 'size-8'
+			const iconSrc = button.icon
 			return (
 				<motion.a
 					key={button.id}
 					href={button.value}
 					target='_blank'
 					{...commonProps}
-					className='card relative flex items-center gap-2 rounded-xl px-3 py-2.5 font-medium whitespace-nowrap'>
-					{hasLabel ? button.label : button.value}
+					className={`card relative flex items-center gap-2 rounded-xl font-medium whitespace-nowrap ${hasLabel || iconSrc ? 'px-3 py-2.5' : 'p-1.5'}`}>
+					{iconSrc ? (
+						iconSrc.startsWith('/') || iconSrc.startsWith('http') ? (
+							<img src={iconSrc} alt='' className={linkIconSize} style={{ objectFit: 'contain' }} />
+						) : (
+							<span className={linkIconSize}>{iconSrc}</span>
+						)
+					) : (
+						<LinkSVG className={linkIconSize} />
+					)}
+					{(hasLabel || !iconSrc) && (button.label || button.value)}
 				</motion.a>
 			)
 		}
