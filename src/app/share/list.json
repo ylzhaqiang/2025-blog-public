@@ -168,5 +168,45 @@
 			"收藏"
 		],
 		"stars": 3
+	},
+	{
+		"name": "金牌影视",
+		"logo": "blob:https://www.221107.xyz/8b9f7549-5461-4287-9925-f599e140716c",
+		"url": "https://www.huiqinmuye.com",
+		"description": "在线影视",
+		"tags": [
+			"收藏"
+		],
+		"stars": 3
+	},
+	{
+		"name": "itellyou",
+		"logo": "blob:https://www.221107.xyz/f2be05d7-cfa7-408d-b98c-9adea98339db",
+		"url": "https://next.itellyou.cn/Original/Index#cbp=Product?ID=f905b2d9-11e7-4ee3-8b52-407a8befe8d1",
+		"description": "系统下载",
+		"tags": [
+			"收藏"
+		],
+		"stars": 3
+	},
+	{
+		"name": "读书派",
+		"logo": "blob:https://www.221107.xyz/3b1668be-43fa-41f3-9d21-5e61ecdc5f3c",
+		"url": "https://www.dushupai.com/",
+		"description": "书籍下载",
+		"tags": [
+			"收藏"
+		],
+		"stars": 3
+	},
+	{
+		"name": "短剧狗",
+		"logo": "blob:https://www.221107.xyz/1004af75-d962-44a3-974a-1c0cbe352833",
+		"url": "https://duanjugou.top",
+		"description": "短剧",
+		"tags": [
+			"收藏"
+		],
+		"stars": 3
 	}
 ]
