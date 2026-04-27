@@ -11,8 +11,8 @@
 		"width": 343,
 		"height": 279,
 		"order": 1,
-		"offsetX": -562,
-		"offsetY": -360,
+		"offsetX": -556,
+		"offsetY": -287,
 		"enabled": true
 	},
 	"clockCard": {
@@ -45,8 +45,8 @@
 		"width": 351,
 		"height": 50,
 		"order": 6,
-		"offsetX": -563,
-		"offsetY": -59,
+		"offsetX": -564,
+		"offsetY": 2,
 		"enabled": true
 	},
 	"shareCard": {
@@ -58,11 +58,11 @@
 		"enabled": false
 	},
 	"articleCard": {
-		"width": 362,
-		"height": 172,
+		"width": 355,
+		"height": 170,
 		"order": 8,
-		"offsetX": -574,
-		"offsetY": 20,
+		"offsetX": -568,
+		"offsetY": 90,
 		"enabled": true
 	},
 	"writeButtons": {
@@ -106,11 +106,11 @@
 		"enabled": true
 	},
 	"rssReader": {
-		"width": 353,
-		"height": 363,
+		"width": 350,
+		"height": 360,
 		"order": 9,
-		"offsetX": -183,
-		"offsetY": -117,
+		"offsetX": -175,
+		"offsetY": -112,
 		"enabled": true
 	}
 }
