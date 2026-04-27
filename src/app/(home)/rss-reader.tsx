@@ -86,6 +86,7 @@ export default function RssReader() {
 				height={styles?.height || 400}
 				x={x}
 				y={y}
+				className='max-sm:static'
 			>
 				{siteContent.enableChristmas && (
 					<>
