@@ -128,5 +128,45 @@
 			"常用"
 		],
 		"stars": 3
+	},
+	{
+		"name": "163邮箱",
+		"logo": "https://nasicon.top/icon/MailMaster--%E7%BD%91%E6%98%93%E9%82%AE%E7%AE%B1%E5%A4%A7%E5%B8%88--mail.163.com.png",
+		"url": "https://mail.163.com/",
+		"description": "163邮箱",
+		"tags": [
+			"收藏"
+		],
+		"stars": 3
+	},
+	{
+		"name": "哔哩哔哩",
+		"logo": "https://nasicon.top/icon/Bilibili_A--%E5%93%94%E5%93%A9%E5%93%94%E5%93%A9--qdnas-s.png",
+		"url": "https://www.bilibili.com/",
+		"description": "哔哩哔哩视频",
+		"tags": [
+			"收藏"
+		],
+		"stars": 3
+	},
+	{
+		"name": "飞牛论坛",
+		"logo": "https://nasicon.top/icon/feiniu%E9%A3%9E%E7%89%9Bfnnas.jpg",
+		"url": "https://club.fnnas.com/forum.php?mod=forumdisplay&fid=25",
+		"description": "飞牛社区",
+		"tags": [
+			"收藏"
+		],
+		"stars": 3
+	},
+	{
+		"name": "腾讯云",
+		"logo": "https://cloud.tencent.com/favicon.ico",
+		"url": "https://cloud.tencent.com/login?s_url=https%3A%2F%2Fconsole.cloud.tencent.com%2F",
+		"description": "腾讯云",
+		"tags": [
+			"收藏"
+		],
+		"stars": 3
 	}
 ]
