@@ -31,7 +31,7 @@ export default function Page() {
 		if (logoItem) {
 			setLogoItems(prev => {
 				const newMap = new Map(prev)
-				newMap.set(updatedShare.url, logoItem)
+				newMap.set(oldShare.url, logoItem)
 				return newMap
 			})
 		}
