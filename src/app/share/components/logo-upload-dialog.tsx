@@ -95,9 +95,9 @@ export default function LogoUploadDialog({ currentLogo, onClose, onSubmit }: Log
 				</div>
 
 				<div>
-					<label className='text-secondary mb-2 block text-sm font-medium'>图片 URL</label>
+					<label className='text-secondary mb-2 block text-sm font-medium'>图片路径</label>
 					<input
-						type='url'
+						type='text'
 						value={urlInput}
 						onChange={e => {
 							setUrlInput(e.target.value)
@@ -106,7 +106,7 @@ export default function LogoUploadDialog({ currentLogo, onClose, onSubmit }: Log
 								setPreviewFile(null)
 							}
 						}}
-						placeholder='https://example.com/logo.png'
+						placeholder='/images/ico/xx.png 或 https://...'
 						className='focus:ring-brand w-full rounded-lg border border-gray-300 bg-gray-200 px-4 py-2 focus:ring-2 focus:outline-none'
 					/>
 				</div>
