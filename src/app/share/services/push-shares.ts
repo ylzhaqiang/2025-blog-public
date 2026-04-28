@@ -38,10 +38,9 @@ export async function pushShares(params: PushSharesParams): Promise<void> {
 				const hash = logoItem.hash || (await hashFileSHA256(logoItem.file))
 				const ext = getFileExt(logoItem.file.name)
 				const filename = `${hash}${ext}`
-				const publicPath = `/images/share/${filename}`
-
+				const publicPath = `/images/ico/${filename}`
 				if (!uploadedHashes.has(hash)) {
-					const path = `public/images/share/${filename}`
+					const path = `public/images/ico/${filename}`
 					const contentBase64 = await fileToBase64NoPrefix(logoItem.file)
 					const blobData = await createBlob(token, GITHUB_CONFIG.OWNER, GITHUB_CONFIG.REPO, contentBase64, 'base64')
 					treeItems.push({

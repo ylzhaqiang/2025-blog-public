@@ -100,7 +100,7 @@ export function ShareCard({ share, isEditMode = false, onUpdate, onDelete }: Sha
 					</div>
 				)}
 				<div className='flex items-center gap-2 p-2'>
-					<img src={localShare.logo.startsWith('http') ? localShare.logo : `/images/share-logos/${localShare.logo}`} alt={localShare.name} className='h-12 w-12 rounded-lg object-cover' />
+					<img src={localShare.logo.startsWith('http') || localShare.logo.startsWith('/') ? localShare.logo : `/images/share-logos/${localShare.logo}`} alt={localShare.name} className='h-12 w-12 rounded-lg object-cover' />
 					<span className='text-xs font-medium text-foreground truncate'>{localShare.name}</span>
 				</div>
 			</motion.a>
@@ -141,7 +141,7 @@ export function ShareCard({ share, isEditMode = false, onUpdate, onDelete }: Sha
 				<div className='mb-4 flex items-center gap-4'>
 					<div className='group relative'>
 						<img
-							src={localShare.logo.startsWith('http') ? localShare.logo : `/images/share-logos/${localShare.logo}`}
+							src={localShare.logo.startsWith('http') || localShare.logo.startsWith('/') ? localShare.logo : `/images/share-logos/${localShare.logo}`}
 							alt={localShare.name}
 							className={cn('h-16 w-16 rounded-xl object-cover', canEdit && 'cursor-pointer')}
 							onClick={() => canEdit && setShowLogoDialog(true)}
