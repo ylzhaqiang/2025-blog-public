@@ -16,6 +16,7 @@ interface GridViewProps {
 	onDragOver?: (e: React.DragEvent, index: number) => void
 	onDrop?: (e: React.DragEvent, index: number) => void
 	onDragEnd?: () => void
+	onContextMenu?: (e: React.MouseEvent, share: Share) => void
 }
 
 export default function GridView({
@@ -28,7 +29,8 @@ export default function GridView({
 	onDragStart,
 	onDragOver,
 	onDrop,
-	onDragEnd
+	onDragEnd,
+	onContextMenu
 }: GridViewProps) {
 	const [searchTerm, setSearchTerm] = useState('')
 	const [selectedTag, setSelectedTag] = useState<string>('all')
@@ -87,6 +89,7 @@ export default function GridView({
 							onDragOver={e => onDragOver?.(e, originalIndex)}
 							onDrop={e => onDrop?.(e, originalIndex)}
 							onDragEnd={onDragEnd}
+							onContextMenu={e => onContextMenu?.(e, share)}
 							className={cn(
 								'relative transition-all',
 								draggedIndex === originalIndex && 'opacity-50',

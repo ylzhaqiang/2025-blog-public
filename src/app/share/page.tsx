@@ -12,6 +12,12 @@ import initialList from './list.json'
 import type { Share } from './components/share-card'
 import type { LogoItem } from './components/logo-upload-dialog'
 
+interface ContextMenuState {
+	x: number
+	y: number
+	share: Share
+}
+
 export default function Page() {
 	const [shares, setShares] = useState<Share[]>(initialList as Share[])
 	const [originalShares, setOriginalShares] = useState<Share[]>(initialList as Share[])
@@ -22,6 +28,7 @@ export default function Page() {
 	const [logoItems, setLogoItems] = useState<Map<string, LogoItem>>(new Map())
 	const [draggedIndex, setDraggedIndex] = useState<number | null>(null)
 	const [dragOverIndex, setDragOverIndex] = useState<number | null>(null)
+	const [contextMenu, setContextMenu] = useState<ContextMenuState | null>(null)
 	const keyInputRef = useRef<HTMLInputElement>(null)
 
 	const { isAuth, setPrivateKey } = useAuthStore()
@@ -91,6 +98,7 @@ export default function Page() {
 			setOriginalShares(shares)
 			setLogoItems(new Map())
 			setIsEditMode(false)
+			setContextMenu(null)
 			toast.success('保存成功！')
 		} catch (error: any) {
 			console.error('Failed to save:', error)
@@ -104,6 +112,7 @@ export default function Page() {
 		setShares(originalShares)
 		setLogoItems(new Map())
 		setIsEditMode(false)
+		setContextMenu(null)
 	}
 
 	const buttonText = isAuth ? '保存' : '导入密钥'
@@ -140,6 +149,26 @@ export default function Page() {
 		setDraggedIndex(null)
 		setDragOverIndex(null)
 	}
+
+	// 右键菜单
+	const handleContextMenu = (e: React.MouseEvent, share: Share) => {
+		if (isEditMode) return
+		e.preventDefault()
+		setContextMenu({ x: e.clientX, y: e.clientY, share })
+	}
+
+	const handleCloseContextMenu = () => {
+		setContextMenu(null)
+	}
+
+	// 点击其他地方关闭右键菜单
+	useEffect(() => {
+		const handleClick = () => setContextMenu(null)
+		if (contextMenu) {
+			document.addEventListener('click', handleClick)
+			return () => document.removeEventListener('click', handleClick)
+		}
+	}, [contextMenu])
 
 	useEffect(() => {
 		const handleKeyDown = (e: KeyboardEvent) => {
@@ -180,7 +209,49 @@ export default function Page() {
 				onDragOver={handleDragOver}
 				onDrop={handleDrop}
 				onDragEnd={handleDragEnd}
+				onContextMenu={handleContextMenu}
 			/>
+
+			{/* 右键菜单 - 放在页面级别，只显示一个 */}
+			{contextMenu && (
+				<div
+					className='fixed z-50 rounded-lg border border-gray-200/50 bg-white/80 py-1 shadow-lg backdrop-blur-sm'
+					style={{ left: contextMenu.x, top: contextMenu.y }}
+					onClick={e => e.stopPropagation()}>
+					<button
+						className='w-full px-4 py-2 text-left text-sm hover:bg-gray-100/80 whitespace-nowrap'
+						onClick={() => {
+							window.open(contextMenu.share.url, '_blank')
+							handleCloseContextMenu()
+						}}>
+						外网访问
+					</button>
+					{contextMenu.share.internalUrl && (
+						<button
+							className='w-full px-4 py-2 text-left text-sm hover:bg-gray-100/80 whitespace-nowrap'
+							onClick={() => {
+								window.open(contextMenu.share.internalUrl, '_blank')
+								handleCloseContextMenu()
+							}}>
+							内网访问
+						</button>
+					)}
+					{isEditMode && (
+						<>
+							<div className='my-1 border-t border-gray-200/50' />
+							<button
+								className='w-full px-4 py-2 text-left text-sm hover:bg-gray-100/80 whitespace-nowrap'
+								onClick={() => {
+									handleCloseContextMenu()
+									setEditingShare(contextMenu.share)
+									setIsCreateDialogOpen(true)
+								}}>
+								编辑卡片
+							</button>
+						</>
+					)}
+				</div>
+			)}
 
 			<motion.div initial={{ opacity: 0, scale: 0.6 }} animate={{ opacity: 1, scale: 1 }} className='absolute top-4 right-6 flex gap-3 max-sm:hidden'>
 				{isEditMode ? (

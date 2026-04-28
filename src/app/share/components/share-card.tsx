@@ -3,7 +3,7 @@
 import { motion } from 'motion/react'
 import { useSize } from '@/hooks/use-size'
 import { cn } from '@/lib/utils'
-import { useEffect, useState, useRef } from 'react'
+import { useEffect, useState } from 'react'
 import LogoUploadDialog, { type LogoItem } from './logo-upload-dialog'
 
 export interface Share {
@@ -29,22 +29,11 @@ export function ShareCard({ share, isEditMode = false, onUpdate, onDelete }: Sha
 	const [localShare, setLocalShare] = useState(share)
 	const [showLogoDialog, setShowLogoDialog] = useState(false)
 	const [logoItem, setLogoItem] = useState<LogoItem | null>(null)
-	const [contextMenu, setContextMenu] = useState<{ x: number; y: number } | null>(null)
-	const contextMenuRef = useRef<HTMLDivElement>(null)
 
 	// 同步 share prop 的变化（保存后 logo 更新）
 	useEffect(() => {
 		setLocalShare(share)
 	}, [share])
-
-	// 点击其他地方关闭右键菜单
-	useEffect(() => {
-		const handleClick = () => setContextMenu(null)
-		if (contextMenu) {
-			document.addEventListener('click', handleClick)
-			return () => document.removeEventListener('click', handleClick)
-		}
-	}, [contextMenu])
 
 	const handleFieldChange = (field: keyof Share, value: any) => {
 		const updated = { ...localShare, [field]: value }
@@ -74,95 +63,45 @@ export function ShareCard({ share, isEditMode = false, onUpdate, onDelete }: Sha
 		setLogoItem(null)
 	}
 
-	const handleContextMenu = (e: React.MouseEvent) => {
-		if (isEditMode) return // 编辑模式下不显示右键菜单
-		e.preventDefault()
-		setContextMenu({ x: e.clientX, y: e.clientY })
-	}
-
 	const canEdit = isEditMode && isEditing
 
 	// 非编辑模式：紧凑显示
 	if (!canEdit) {
 		return (
-			<>
-				<motion.a
-					href={share.url}
-					target='_blank'
-					rel='noopener noreferrer'
-					onContextMenu={handleContextMenu}
-					initial={{ opacity: 0, scale: 0.6 }}
-					{...(maxSM ? { animate: { opacity: 1, scale: 1 } } : { whileInView: { opacity: 1, scale: 1 } })}
-					className='card relative block overflow-hidden' style={{ textDecoration: 'none' }}>
-					{isEditMode && (
-						<div className='absolute top-1 right-1 z-10 flex gap-1'>
-							<button
-								onClick={e => { e.preventDefault(); e.stopPropagation(); setIsEditing(true) }}
-								className='rounded-lg bg-white/80 p-1.5 text-gray-500 shadow-sm hover:bg-white hover:text-blue-500'
-								style={{ width: 28, height: 28 }}>
-								<svg width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='currentColor' strokeWidth='2' strokeLinecap='round' strokeLinejoin='round'>
-									<path d='M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7' />
-									<path d='M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z' />
-								</svg>
-							</button>
-							<button
-								onClick={e => { e.preventDefault(); e.stopPropagation(); onDelete?.() }}
-								className='rounded-lg bg-white/80 p-1.5 text-gray-500 shadow-sm hover:bg-white hover:text-red-500'
-								style={{ width: 28, height: 28 }}>
-								<svg width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='currentColor' strokeWidth='2' strokeLinecap='round' strokeLinejoin='round'>
-									<polyline points='3 6 5 6 21 6' />
-									<path d='M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2' />
-								</svg>
-							</button>
-						</div>
-					)}
-					<div className='flex items-center gap-2 p-2'>
-						<img src={localShare.logo.startsWith('http') || localShare.logo.startsWith('/') ? localShare.logo : `/images/share-logos/${localShare.logo}`} alt={localShare.name} className='h-12 w-12 rounded-lg object-cover' />
-						<span className='text-xs font-medium text-foreground truncate'>{localShare.name}</span>
-					</div>
-				</motion.a>
-
-				{/* 右键菜单 */}
-				{contextMenu && (
-					<div
-						ref={contextMenuRef}
-						className='fixed z-50 min-w-[120px] rounded-lg border bg-white py-1 shadow-lg'
-						style={{ left: contextMenu.x, top: contextMenu.y }}
-						onClick={e => e.stopPropagation()}>
+			<motion.a
+				href={share.url}
+				target='_blank'
+				rel='noopener noreferrer'
+				initial={{ opacity: 0, scale: 0.6 }}
+				{...(maxSM ? { animate: { opacity: 1, scale: 1 } } : { whileInView: { opacity: 1, scale: 1 } })}
+				className='card relative block overflow-hidden' style={{ textDecoration: 'none' }}>
+				{isEditMode && (
+					<div className='absolute top-1 right-1 z-10 flex gap-1'>
 						<button
-							className='w-full px-4 py-2 text-left text-sm hover:bg-gray-100'
-							onClick={() => {
-								window.open(share.url, '_blank')
-								setContextMenu(null)
-							}}>
-							外网访问
+							onClick={e => { e.preventDefault(); e.stopPropagation(); setIsEditing(true) }}
+							className='rounded-lg bg-white/80 p-1.5 text-gray-500 shadow-sm hover:bg-white hover:text-blue-500'
+							style={{ width: 28, height: 28 }}>
+							<svg width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='currentColor' strokeWidth='2' strokeLinecap='round' strokeLinejoin='round'>
+								<path d='M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7' />
+								<path d='M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z' />
+							</svg>
 						</button>
-						{share.internalUrl && (
-							<button
-								className='w-full px-4 py-2 text-left text-sm hover:bg-gray-100'
-								onClick={() => {
-									window.open(share.internalUrl, '_blank')
-									setContextMenu(null)
-								}}>
-								内网访问
-							</button>
-						)}
-						{isEditMode && (
-							<>
-								<div className='my-1 border-t' />
-								<button
-									className='w-full px-4 py-2 text-left text-sm hover:bg-gray-100'
-									onClick={() => {
-										setIsEditing(true)
-										setContextMenu(null)
-									}}>
-									编辑卡片
-								</button>
-							</>
-						)}
+						<button
+							onClick={e => { e.preventDefault(); e.stopPropagation(); onDelete?.() }}
+							className='rounded-lg bg-white/80 p-1.5 text-gray-500 shadow-sm hover:bg-white hover:text-red-500'
+							style={{ width: 28, height: 28 }}>
+							<svg width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='currentColor' strokeWidth='2' strokeLinecap='round' strokeLinejoin='round'>
+								<polyline points='3 6 5 6 21 6' />
+								<path d='M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2' />
+							</svg>
+						</button>
 					</div>
 				)}
-			</>
+				<div className='flex items-center gap-2 p-2'>
+					<img src={localShare.logo.startsWith('http') || localShare.logo.startsWith('/') ? localShare.logo : `/images/share-logos/${localShare.logo}`} alt={localShare.name} className='h-12 w-12 rounded-lg object-cover' />
+					<span className='text-xs font-medium text-foreground truncate'>{localShare.name}</span>
+				</div>
+			</motion.a>
 		)
 	}
 
