@@ -1,10 +1,9 @@
 import { toBase64Utf8, getRef, createTree, createCommit, updateRef, createBlob, type TreeItem } from '@/lib/github-client'
-import { fileToBase64NoPrefix, hashFileSHA256 } from '@/lib/file-utils'
+import { fileToBase64NoPrefix } from '@/lib/file-utils'
 import { getAuthToken } from '@/lib/auth'
 import { GITHUB_CONFIG } from '@/consts'
 import type { Share } from '../components/share-card'
 import type { LogoItem } from '../components/logo-upload-dialog'
-import { getFileExt } from '@/lib/utils'
 import { toast } from 'sonner'
 
 export type PushSharesParams = {
@@ -35,11 +34,9 @@ export async function pushShares(params: PushSharesParams): Promise<void> {
 		toast.info('正在上传图标...')
 		for (const [url, logoItem] of logoItems.entries()) {
 			if (logoItem.type === 'file') {
-				const hash = logoItem.hash || (await hashFileSHA256(logoItem.file))
-				const ext = getFileExt(logoItem.file.name)
-				const filename = `${hash}${ext}`
+				const filename = logoItem.file.name
 				const publicPath = `/images/share/${filename}`
-				if (!uploadedHashes.has(hash)) {
+				if (!uploadedHashes.has(filename)) {
 					const path = `public/images/share/${filename}`
 					const contentBase64 = await fileToBase64NoPrefix(logoItem.file)
 					const blobData = await createBlob(token, GITHUB_CONFIG.OWNER, GITHUB_CONFIG.REPO, contentBase64, 'base64')
@@ -49,7 +46,7 @@ export async function pushShares(params: PushSharesParams): Promise<void> {
 						type: 'blob',
 						sha: blobData.sha
 					})
-					uploadedHashes.add(hash)
+					uploadedHashes.add(filename)
 				}
 
 				// Update share logo URL

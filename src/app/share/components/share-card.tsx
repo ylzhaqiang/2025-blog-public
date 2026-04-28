@@ -45,7 +45,7 @@ export function ShareCard({ share, isEditMode = false, onUpdate, onDelete }: Sha
 
 	const handleLogoSubmit = (logo: LogoItem) => {
 		setLogoItem(logo)
-		const logoUrl = logo.type === 'url' ? logo.url : logo.previewUrl
+		const logoUrl = logo.type === 'url' ? logo.url : `/images/share/${logo.file.name}`
 		const updated = { ...localShare, logo: logoUrl }
 		setLocalShare(updated)
 		onUpdate?.(updated, share, logo)
