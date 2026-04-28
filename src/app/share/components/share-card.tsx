@@ -1,10 +1,8 @@
 'use client'
 
 import { motion } from 'motion/react'
-import StarRating from '@/components/star-rating'
 import { useSize } from '@/hooks/use-size'
 import { cn } from '@/lib/utils'
-import EditableStarRating from '@/components/editable-star-rating'
 import { useEffect, useState } from 'react'
 import LogoUploadDialog, { type LogoItem } from './logo-upload-dialog'
 
@@ -137,90 +135,74 @@ export function ShareCard({ share, isEditMode = false, onUpdate, onDelete }: Sha
 				</div>
 			)}
 
-			<div>
-				<div className='mb-4 flex items-center gap-4'>
-					<div className='group relative'>
-						<img
-							src={localShare.logo.startsWith('http') || localShare.logo.startsWith('/') ? localShare.logo : `/images/share-logos/${localShare.logo}`}
-							alt={localShare.name}
-							className={cn('h-16 w-16 rounded-xl object-cover', canEdit && 'cursor-pointer')}
-							onClick={() => canEdit && setShowLogoDialog(true)}
-						/>
-						{canEdit && (
-							<div className='ev pointer-events-none absolute inset-0 flex items-center justify-center rounded-xl bg-black/40 opacity-0 transition-opacity group-hover:opacity-100'>
-								<span className='text-xs text-white'>更换</span>
-							</div>
-						)}
-					</div>
-					<div className='flex-1'>
-						<h3
-							contentEditable={canEdit}
-							suppressContentEditableWarning
-							onBlur={e => handleFieldChange('name', e.currentTarget.textContent || '')}
-							className={cn('group-hover:text-brand text-lg font-bold transition-colors focus:outline-none', canEdit && 'cursor-text')}>
-							{localShare.name}
-						</h3>
-						{canEdit ? (
-							<div
-								contentEditable
-								suppressContentEditableWarning
-								onBlur={e => handleFieldChange('url', e.currentTarget.textContent || '')}
-								className='text-secondary mt-1 block max-w-[200px] cursor-text truncate text-xs focus:outline-none'>
-								{localShare.url}
-							</div>
-						) : (
-							<a
-								href={localShare.url}
-								target='_blank'
-								rel='noopener noreferrer'
-								className='text-secondary hover:text-brand mt-1 block max-w-[200px] truncate text-xs hover:underline'>
-								{localShare.url}
-							</a>
-						)}
-					</div>
+			<div className='flex flex-col items-center gap-4 py-6'>
+				{/* 头像：居中 */}
+				<div className='group relative'>
+					<img
+						src={localShare.logo.startsWith('http') || localShare.logo.startsWith('/') ? localShare.logo : `/images/share-logos/${localShare.logo}`}
+						alt={localShare.name}
+						className={cn('h-20 w-20 rounded-xl object-cover', canEdit && 'cursor-pointer')}
+						onClick={() => canEdit && setShowLogoDialog(true)}
+					/>
+					{canEdit && (
+						<div className='ev pointer-events-none absolute inset-0 flex items-center justify-center rounded-xl bg-black/40 opacity-0 transition-opacity group-hover:opacity-100'>
+							<span className='text-xs text-white'>更换</span>
+						</div>
+					)}
 				</div>
 
-				{canEdit ? (
-					<EditableStarRating stars={localShare.stars} editable={true} onChange={stars => handleFieldChange('stars', stars)} />
-				) : (
-					<StarRating stars={localShare.stars} />
-				)}
+				{/* 名称：居中 */}
+				<div className='w-full max-w-[280px]'>
+					<h3
+						contentEditable={canEdit}
+						suppressContentEditableWarning
+						onBlur={e => handleFieldChange('name', e.currentTarget.textContent || '')}
+						className={cn('text-center text-lg font-bold transition-colors focus:outline-none', canEdit && 'cursor-text')}>
+						{localShare.name}
+					</h3>
+				</div>
 
-				<div className='mt-3 flex flex-wrap gap-1.5'>
+				{/* 网址：在名称下方居中 */}
+				<div className='w-full max-w-[280px]'>
+					{canEdit ? (
+						<div
+							contentEditable
+							suppressContentEditableWarning
+							onBlur={e => handleFieldChange('url', e.currentTarget.textContent || '')}
+							className='text-secondary text-center block cursor-text truncate text-xs focus:outline-none'>
+							{localShare.url}
+						</div>
+					) : (
+						<a
+							href={localShare.url}
+							target='_blank'
+							rel='noopener noreferrer'
+							className='text-secondary text-center hover:text-brand block max-w-[200px] mx-auto truncate text-xs hover:underline'>
+							{localShare.url}
+						</a>
+					)}
+				</div>
+
+				{/* 标签：在网址下方居中 */}
+				<div className='w-full max-w-[280px]'>
 					{canEdit ? (
 						<input
 							type='text'
 							value={localShare.tags.join(', ')}
 							onChange={e => handleTagsChange(e.target.value)}
 							placeholder='标签，用逗号分隔'
-							className='w-full rounded-md border border-gray-300 bg-gray-50 px-2 py-1 text-xs focus:outline-none'
+							className='w-full rounded-md border border-gray-300 bg-gray-50 px-2 py-1 text-center text-xs focus:outline-none'
 						/>
 					) : (
-						localShare.tags.map(tag => (
-							<span key={tag} className='bg-secondary/10 rounded-full px-2.5 py-0.5 text-xs'>
-								{tag}
-							</span>
-						))
+						<div className='flex flex-wrap justify-center gap-1.5'>
+							{localShare.tags.map(tag => (
+								<span key={tag} className='bg-secondary/10 rounded-full px-2.5 py-0.5 text-xs'>
+									{tag}
+								</span>
+							))}
+						</div>
 					)}
 				</div>
-
-				<p
-					contentEditable={canEdit}
-					suppressContentEditableWarning
-					onBlur={e => handleFieldChange('description', e.currentTarget.textContent || '')}
-					onClick={e => {
-						if (!canEdit) {
-							e.preventDefault()
-							setExpanded(!expanded)
-						}
-					}}
-					className={cn(
-						'mt-3 text-sm leading-relaxed text-gray-600 transition-all duration-300 focus:outline-none',
-						canEdit ? 'cursor-text' : 'cursor-pointer',
-						!canEdit && (expanded ? 'line-clamp-none' : 'line-clamp-3')
-					)}>
-					{localShare.description}
-				</p>
 			</div>
 
 			{canEdit && showLogoDialog && <LogoUploadDialog currentLogo={localShare.logo} onClose={() => setShowLogoDialog(false)} onSubmit={handleLogoSubmit} />}
