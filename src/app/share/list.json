@@ -71,7 +71,7 @@
 	},
 	{
 		"name": "game520",
-		"logo": "https://v1.imagehub.cc/images/2026/04/21/1210e985ce56b56f20e06094f6817d28.png",
+		"logo": "https://nasicon.top/icon/com.google.android.play.games.png",
 		"url": "https://www.gamer520.com/",
 		"description": "游戏下载",
 		"tags": [
@@ -211,7 +211,7 @@
 	},
 	{
 		"name": "源论坛",
-		"logo": "blob:https://www.221107.xyz/ffa8d2a4-0bbe-49e1-af9f-7455a9672033",
+		"logo": "/images/share/yuan.ico",
 		"url": "https://pc.sysbbs.com/",
 		"description": "阅读书源论坛",
 		"tags": [
@@ -221,7 +221,7 @@
 	},
 	{
 		"name": "美团AI",
-		"logo": "blob:https://www.221107.xyz/8214e447-925c-4ade-9aee-d5beffbed006",
+		"logo": "/images/share/meituan.svg",
 		"url": "https://longcat.chat/platform/usage",
 		"description": "1",
 		"tags": [
@@ -231,7 +231,7 @@
 	},
 	{
 		"name": "果核剥壳",
-		"logo": "blob:https://www.221107.xyz/77ffb494-b187-4b7b-892e-e1fb9cfa9e4d",
+		"logo": "/images/share/guo.ico",
 		"url": "https://www.ghxi.com/category/all",
 		"description": "1",
 		"tags": [
@@ -241,7 +241,7 @@
 	},
 	{
 		"name": "cloudflare",
-		"logo": "blob:https://www.221107.xyz/55c241b6-e122-4861-bb5b-b62da2c1f051",
+		"logo": "/images/share/cloud.webp",
 		"url": "https://dash.cloudflare.com/886d552d421ad832ebcba3656355cf0e",
 		"description": "1",
 		"tags": [
@@ -251,7 +251,7 @@
 	},
 	{
 		"name": "Kmoe [漫畫]",
-		"logo": "blob:https://www.221107.xyz/fa9d3bb2-5461-4881-bce9-2a59816aa4be",
+		"logo": "/images/share/km.ico",
 		"url": "https://kzz.moe",
 		"description": "1",
 		"tags": [
@@ -261,7 +261,7 @@
 	},
 	{
 		"name": "3dmgame",
-		"logo": "blob:https://www.221107.xyz/9664b59a-af34-4307-bf4a-4556a0fea911",
+		"logo": "/images/share/3dm.ico",
 		"url": "https://bbs.3dmgame.com/forum.php",
 		"description": "1",
 		"tags": [
@@ -271,7 +271,7 @@
 	},
 	{
 		"name": "阅读APP源",
-		"logo": "blob:https://www.221107.xyz/d6c39c35-f560-4775-b042-213bc916b04b",
+		"logo": "/images/share/yue.ico",
 		"url": "https://legado.aoaostar.com",
 		"description": "1",
 		"tags": [
@@ -281,7 +281,7 @@
 	},
 	{
 		"name": "吾爱破解",
-		"logo": "blob:https://www.221107.xyz/2293cfc6-dd59-4bd2-95a6-cb5b9b77908c",
+		"logo": "/images/share/wu.ico",
 		"url": "https://www.52pojie.cn/forum-16-1.html",
 		"description": "1",
 		"tags": [
@@ -291,7 +291,7 @@
 	},
 	{
 		"name": "网易云音乐",
-		"logo": "blob:https://www.221107.xyz/0e2e9fc4-5ba8-4dcd-a203-8a0ce78a7647",
+		"logo": "/images/share/yin.ico",
 		"url": "https://music.163.com/#/playlist?id=7665487370",
 		"description": "1",
 		"tags": [
@@ -301,7 +301,7 @@
 	},
 	{
 		"name": "claw.cloud",
-		"logo": "blob:https://www.221107.xyz/bed23e3c-402b-4a03-b9c5-d714c1250aab",
+		"logo": "/images/share/claw.ico",
 		"url": "https://ap-northeast-1.run.claw.cloud",
 		"description": "claw.cloud",
 		"tags": [
@@ -311,7 +311,7 @@
 	},
 	{
 		"name": "百度贴吧",
-		"logo": "blob:https://www.221107.xyz/747a6f5e-0ee3-4168-93d9-df3ec04dc982",
+		"logo": "/images/share/tie.ico",
 		"url": "https://tieba.baidu.com/home/main?id=tb.1.528d1ec.-4l6PHlVLWNzd4GvOuTYjw&fr=userbar",
 		"description": "1",
 		"tags": [
@@ -321,7 +321,7 @@
 	},
 	{
 		"name": "GO柄网",
-		"logo": "blob:https://www.221107.xyz/fb5724bc-3650-49b2-97d5-001937b188e7",
+		"logo": "/images/share/got.png",
 		"url": "https://www.gobing.cn/communityHome",
 		"description": "1",
 		"tags": [
@@ -331,8 +331,18 @@
 	},
 	{
 		"name": "模之屋",
-		"logo": "blob:https://www.221107.xyz/b553d77a-fc88-4ee0-9a73-3610a0093200",
+		"logo": "/images/share/mo).ico",
 		"url": "https://www.aplaybox.com",
+		"description": "1",
+		"tags": [
+			"收藏"
+		],
+		"stars": 3
+	},
+	{
+		"name": "图标站",
+		"logo": "https://nasicon.top/icon/favicon.png",
+		"url": "https://nasicon.top/",
 		"description": "1",
 		"tags": [
 			"收藏"
