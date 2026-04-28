@@ -1,5 +1,82 @@
 [
 	{
+		"name": "FnNas",
+		"logo": "/images/fnnas.jpg",
+		"url": "https://fnos.724782.xyz:1977",
+		"internalUrl": "http://192.168.8.5:5666",
+		"description": "",
+		"tags": [
+			"Nas App"
+		],
+		"stars": 3
+	},
+	{
+		"name": "Lucky",
+		"logo": "/images/Lucky.png",
+		"url": "https://lucky.724782.xyz:1977/ylcloud",
+		"internalUrl": "http://192.168.8.5:16601/ylcloud",
+		"description": "",
+		"tags": [
+			"Nas App"
+		],
+		"stars": 3
+	},
+	{
+		"name": "Komga",
+		"logo": "/images/share/komga.png",
+		"url": "https://komga.724782.xyz:1977",
+		"internalUrl": "http://192.168.8.5:25600",
+		"description": "",
+		"tags": [
+			"Nas App"
+		],
+		"stars": 3
+	},
+	{
+		"name": "Qiandao",
+		"logo": "/images/share/qiandao_A.png",
+		"url": "https://qiandao.724782.xyz:1977",
+		"internalUrl": "http://192.168.8.5:8923",
+		"description": "",
+		"tags": [
+			"Nas App"
+		],
+		"stars": 3
+	},
+	{
+		"name": "Openlist",
+		"logo": "/images/share/list.png",
+		"url": "https://alist.724782.xyz:1977",
+		"internalUrl": "http://192.168.8.5:5255",
+		"description": "",
+		"tags": [
+			"Nas App"
+		],
+		"stars": 3
+	},
+	{
+		"name": "落雪音乐",
+		"logo": "/images/share/lx.svg",
+		"url": "https://lxmusic.724782.xyz:1977",
+		"internalUrl": "http://192.168.8.5:9527",
+		"description": "",
+		"tags": [
+			"Nas App"
+		],
+		"stars": 3
+	},
+	{
+		"name": "WsScrcpy",
+		"logo": "/images/share/ws.png",
+		"url": "https://scrcpy.724782.xyz:1977",
+		"internalUrl": "http://192.168.8.5:8019",
+		"description": "",
+		"tags": [
+			"Nas App"
+		],
+		"stars": 3
+	},
+	{
 		"name": "政府定点采购网",
 		"logo": "https://nasicon.top/icon/Busybox--BusyBox--busybox.net.png",
 		"url": "https://wssc.hbggzy.cn/home",
@@ -101,7 +178,7 @@
 	},
 	{
 		"name": "Javbus",
-		"logo": "https://nasicon.top/icon/Joplin_B.png",
+		"logo": "/images/share/j.png",
 		"url": "https://www.javbus.com/forum/",
 		"description": "j",
 		"tags": [
