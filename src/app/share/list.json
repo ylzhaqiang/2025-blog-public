@@ -31,7 +31,7 @@
 	},
 	{
 		"name": "观影",
-		"logo": "https://www.gying.net/favicon.ico",
+		"logo": "/images/share/guanying.png",
 		"url": "https://www.gying.net",
 		"description": "观影",
 		"tags": [
@@ -201,7 +201,7 @@
 	},
 	{
 		"name": "短剧狗",
-		"logo": "blob:https://www.221107.xyz/1004af75-d962-44a3-974a-1c0cbe352833",
+		"logo": "/images/share/duan.png",
 		"url": "https://duanjugou.top",
 		"description": "短剧",
 		"tags": [
