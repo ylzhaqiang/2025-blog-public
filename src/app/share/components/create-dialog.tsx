@@ -18,6 +18,7 @@ export default function CreateDialog({ share, onClose, onSave }: CreateDialogPro
 		name: '',
 		logo: '',
 		url: '',
+		internalUrl: '',
 		description: '',
 		tags: [],
 		stars: 3
@@ -34,6 +35,7 @@ export default function CreateDialog({ share, onClose, onSave }: CreateDialogPro
 				name: '',
 				logo: '',
 				url: '',
+				internalUrl: '',
 				description: '',
 				tags: [],
 				stars: 3
@@ -43,7 +45,7 @@ export default function CreateDialog({ share, onClose, onSave }: CreateDialogPro
 	}, [share])
 
 	const handleLogoSubmit = (logo: LogoItem) => {
-		const logoUrl = logo.type === 'url' ? logo.url : logo.previewUrl
+		const logoUrl = logo.type === 'url' ? logo.url : `/images/share/${logo.file.name}`
 		setFormData({ ...formData, logo: logoUrl })
 	}
 
@@ -57,7 +59,7 @@ export default function CreateDialog({ share, onClose, onSave }: CreateDialogPro
 	}
 
 	const handleSubmit = () => {
-		if (!formData.name.trim() || !formData.logo.trim() || !formData.url.trim() || !formData.description.trim()) {
+		if (!formData.name.trim() || !formData.logo.trim() || !formData.url.trim()) {
 			toast.error('请填写所有必填项')
 			return
 		}
@@ -75,76 +77,73 @@ export default function CreateDialog({ share, onClose, onSave }: CreateDialogPro
 	return (
 		<DialogModal open onClose={onClose} className='card max-h-[90vh] w-sm overflow-y-auto'>
 			{/* 卡片样式的内容 */}
-			<div>
-				<div className='mb-4 flex items-center gap-4'>
-					<div className='group relative cursor-pointer' onClick={() => setShowLogoDialog(true)}>
-						{formData.logo ? (
-							<>
-								<img src={formData.logo} alt={formData.name} className='h-16 w-16 rounded-xl object-cover' />
-								<div className='pointer-events-none absolute inset-0 flex items-center justify-center rounded-xl bg-black/40 opacity-0 transition-opacity group-hover:opacity-100'>
-									<span className='text-xs text-white'>更换</span>
-								</div>
-							</>
-						) : (
-							<div className='flex h-16 w-16 items-center justify-center rounded-xl bg-gray-200'>
-								<Plus className='h-6 w-6 text-gray-500' />
+			<div className='flex flex-col items-center gap-4'>
+				{/* 头像：居中 */}
+				<div className='group relative cursor-pointer' onClick={() => setShowLogoDialog(true)}>
+					{formData.logo ? (
+						<>
+							<img src={formData.logo.startsWith('http') || formData.logo.startsWith('/') ? formData.logo : `/images/share-logos/${formData.logo}`} alt={formData.name} className='h-20 w-20 rounded-xl object-cover' />
+							<div className='pointer-events-none absolute inset-0 flex items-center justify-center rounded-xl bg-black/40 opacity-0 transition-opacity group-hover:opacity-100'>
+								<span className='text-xs text-white'>更换</span>
 							</div>
-						)}
-					</div>
-					<div className='flex-1'>
-						<input
-							type='text'
-							value={formData.name}
-							onChange={e => setFormData({ ...formData, name: e.target.value })}
-							placeholder='资源名称'
-							className='w-full text-lg font-bold focus:outline-none'
-						/>
-						<input
-							type='url'
-							value={formData.url}
-							onChange={e => setFormData({ ...formData, url: e.target.value })}
-							placeholder='https://example.com'
-							className='text-secondary mt-1 w-full truncate text-xs focus:outline-none'
-						/>
-					</div>
+						</>
+					) : (
+						<div className='flex h-20 w-20 items-center justify-center rounded-xl bg-gray-200'>
+							<Plus className='h-8 w-8 text-gray-500' />
+						</div>
+					)}
 				</div>
 
-				{/* 星级评分 */}
-				<div className='flex items-center gap-0.5'>
-					{[1, 2, 3, 4, 5].map(index => (
-						<div key={index} onClick={() => setFormData({ ...formData, stars: index })} className='cursor-pointer'>
-							<svg width='16' height='16' viewBox='0 0 24 24' className={index <= formData.stars ? 'fill-yellow-400' : 'fill-gray-300'}>
-								<path d='M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z' />
-							</svg>
-						</div>
-					))}
+				{/* 名称 */}
+				<input
+					type='text'
+					value={formData.name}
+					onChange={e => setFormData({ ...formData, name: e.target.value })}
+					placeholder='资源名称'
+					className='w-full max-w-[280px] text-center text-lg font-bold focus:outline-none'
+				/>
+
+				{/* 外网网址 */}
+				<div className='w-full max-w-[280px]'>
+					<label className='text-secondary mb-1 block text-center text-xs'>外网</label>
+					<input
+						type='text'
+						value={formData.url}
+						onChange={e => setFormData({ ...formData, url: e.target.value })}
+						placeholder='https://...'
+						className='w-full rounded-md border border-gray-300 bg-gray-50 px-2 py-1 text-center text-xs focus:outline-none'
+					/>
+				</div>
+
+				{/* 内网网址 */}
+				<div className='w-full max-w-[280px]'>
+					<label className='text-secondary mb-1 block text-center text-xs'>内网</label>
+					<input
+						type='text'
+						value={formData.internalUrl || ''}
+						onChange={e => setFormData({ ...formData, internalUrl: e.target.value })}
+						placeholder='内网访问地址（可选）'
+						className='w-full rounded-md border border-gray-300 bg-gray-50 px-2 py-1 text-center text-xs focus:outline-none'
+					/>
 				</div>
 
 				{/* 标签输入 */}
-				<div className='mt-3'>
+				<div className='w-full max-w-[280px]'>
 					<input
 						type='text'
 						value={tagsInput}
 						onChange={e => handleTagsChange(e.target.value)}
-						placeholder='标签，用逗号分隔（如：图片, 工具）'
-						className='w-full rounded-md border border-gray-300 bg-gray-50 px-3 py-2 text-sm focus:outline-none'
+						placeholder='标签，用逗号分隔'
+						className='w-full rounded-md border border-gray-300 bg-gray-50 px-2 py-1 text-center text-xs focus:outline-none'
 					/>
-					<div className='mt-2 flex flex-wrap gap-1.5'>
+					<div className='mt-2 flex flex-wrap justify-center gap-1.5'>
 						{formData.tags.map(tag => (
-							<span key={tag} className='rounded-full bg-secondary/10 px-2.5 py-0.5 text-xs text-gray-600'>
+							<span key={tag} className='rounded-full bg-secondary/10 px-2.5 py-0.5 text-xs'>
 								{tag}
 							</span>
 						))}
 					</div>
 				</div>
-
-				<textarea
-					value={formData.description}
-					onChange={e => setFormData({ ...formData, description: e.target.value })}
-					placeholder='资源介绍...'
-					className='mt-3 w-full resize-none text-sm leading-relaxed focus:outline-none'
-					rows={4}
-				/>
 			</div>
 
 			{/* 操作按钮 */}
