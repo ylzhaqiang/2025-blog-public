@@ -20,6 +20,8 @@ export default function Page() {
 	const [editingShare, setEditingShare] = useState<Share | null>(null)
 	const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false)
 	const [logoItems, setLogoItems] = useState<Map<string, LogoItem>>(new Map())
+	const [draggedIndex, setDraggedIndex] = useState<number | null>(null)
+	const [dragOverIndex, setDragOverIndex] = useState<number | null>(null)
 	const keyInputRef = useRef<HTMLInputElement>(null)
 
 	const { isAuth, setPrivateKey } = useAuthStore()
@@ -106,6 +108,39 @@ export default function Page() {
 
 	const buttonText = isAuth ? '保存' : '导入密钥'
 
+	// 拖拽排序
+	const handleDragStart = (index: number) => {
+		if (!isEditMode) return
+		setDraggedIndex(index)
+	}
+
+	const handleDragOver = (e: React.DragEvent, index: number) => {
+		if (!isEditMode || draggedIndex === null) return
+		e.preventDefault()
+		setDragOverIndex(index)
+	}
+
+	const handleDrop = (e: React.DragEvent, targetIndex: number) => {
+		if (!isEditMode || draggedIndex === null) return
+		e.preventDefault()
+		if (draggedIndex === targetIndex) {
+			setDraggedIndex(null)
+			setDragOverIndex(null)
+			return
+		}
+		const newShares = [...shares]
+		const [draggedItem] = newShares.splice(draggedIndex, 1)
+		newShares.splice(targetIndex, 0, draggedItem)
+		setShares(newShares)
+		setDraggedIndex(null)
+		setDragOverIndex(null)
+	}
+
+	const handleDragEnd = () => {
+		setDraggedIndex(null)
+		setDragOverIndex(null)
+	}
+
 	useEffect(() => {
 		const handleKeyDown = (e: KeyboardEvent) => {
 			if (!isEditMode && (e.ctrlKey || e.metaKey) && e.key === ',') {
@@ -134,7 +169,18 @@ export default function Page() {
 				}}
 			/>
 
-			<GridView shares={shares} isEditMode={isEditMode} onUpdate={handleUpdate} onDelete={handleDelete} />
+			<GridView
+				shares={shares}
+				isEditMode={isEditMode}
+				onUpdate={handleUpdate}
+				onDelete={handleDelete}
+				draggedIndex={draggedIndex}
+				dragOverIndex={dragOverIndex}
+				onDragStart={handleDragStart}
+				onDragOver={handleDragOver}
+				onDrop={handleDrop}
+				onDragEnd={handleDragEnd}
+			/>
 
 			<motion.div initial={{ opacity: 0, scale: 0.6 }} animate={{ opacity: 1, scale: 1 }} className='absolute top-4 right-6 flex gap-3 max-sm:hidden'>
 				{isEditMode ? (

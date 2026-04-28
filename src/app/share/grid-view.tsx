@@ -10,9 +10,26 @@ interface GridViewProps {
 	isEditMode?: boolean
 	onUpdate?: (share: Share, oldShare: Share, logoItem?: LogoItem) => void
 	onDelete?: (share: Share) => void
+	draggedIndex?: number | null
+	dragOverIndex?: number | null
+	onDragStart?: (index: number) => void
+	onDragOver?: (e: React.DragEvent, index: number) => void
+	onDrop?: (e: React.DragEvent, index: number) => void
+	onDragEnd?: () => void
 }
 
-export default function GridView({ shares, isEditMode = false, onUpdate, onDelete }: GridViewProps) {
+export default function GridView({
+	shares,
+	isEditMode = false,
+	onUpdate,
+	onDelete,
+	draggedIndex,
+	dragOverIndex,
+	onDragStart,
+	onDragOver,
+	onDrop,
+	onDragEnd
+}: GridViewProps) {
 	const [searchTerm, setSearchTerm] = useState('')
 	const [selectedTag, setSelectedTag] = useState<string>('all')
 
@@ -23,6 +40,9 @@ export default function GridView({ shares, isEditMode = false, onUpdate, onDelet
 		const matchesTag = selectedTag === 'all' || share.tags.includes(selectedTag)
 		return matchesSearch && matchesTag
 	})
+
+	// 找出过滤后的项在原始数组中的索引
+	const getOriginalIndex = (share: Share) => shares.indexOf(share)
 
 	return (
 		<div className='mx-auto w-full max-w-7xl px-6 pt-24 pb-12'>
@@ -57,9 +77,25 @@ export default function GridView({ shares, isEditMode = false, onUpdate, onDelet
 			</div>
 
 			<div className='grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-5'>
-				{filteredShares.map(share => (
-					<ShareCard key={share.url} share={share} isEditMode={isEditMode} onUpdate={onUpdate} onDelete={() => onDelete?.(share)} />
-				))}
+				{filteredShares.map(share => {
+					const originalIndex = getOriginalIndex(share)
+					return (
+						<div
+							key={share.url}
+							draggable={isEditMode}
+							onDragStart={() => onDragStart?.(originalIndex)}
+							onDragOver={e => onDragOver?.(e, originalIndex)}
+							onDrop={e => onDrop?.(e, originalIndex)}
+							onDragEnd={onDragEnd}
+							className={cn(
+								'relative transition-all',
+								draggedIndex === originalIndex && 'opacity-50',
+								dragOverIndex === originalIndex && draggedIndex !== null && draggedIndex !== originalIndex && 'ring-2 ring-blue-400'
+							)}>
+							<ShareCard key={share.url} share={share} isEditMode={isEditMode} onUpdate={onUpdate} onDelete={() => onDelete?.(share)} />
+						</div>
+					)
+				})}
 			</div>
 
 			{filteredShares.length === 0 && (
@@ -69,4 +105,8 @@ export default function GridView({ shares, isEditMode = false, onUpdate, onDelet
 			)}
 		</div>
 	)
+}
+
+function cn(...classes: (string | boolean | undefined | null)[]) {
+	return classes.filter(Boolean).join(' ')
 }
