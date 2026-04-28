@@ -71,7 +71,7 @@
 	},
 	{
 		"name": "game520",
-		"logo": "https://nasicon.top/icon/com.google.android.play.games.png",
+		"logo": "/images/share/game.png",
 		"url": "https://www.gamer520.com/",
 		"description": "游戏下载",
 		"tags": [
@@ -341,7 +341,7 @@
 	},
 	{
 		"name": "图标站",
-		"logo": "https://nasicon.top/icon/favicon.png",
+		"logo": "/images/share/fafn.png",
 		"url": "https://nasicon.top/",
 		"description": "1",
 		"tags": [
