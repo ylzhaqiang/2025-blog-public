@@ -90,6 +90,7 @@
 	"clockShowSeconds": false,
 	"summaryInContent": false,
 	"wecomWebhookUrl": "",
+	"ncPhoneNumber": "",
 	"isCachePem": true,
 	"hideEditButton": false,
 	"enableCategories": true,

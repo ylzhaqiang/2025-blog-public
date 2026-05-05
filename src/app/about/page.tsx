@@ -4,8 +4,6 @@ import { useState, useCallback, useEffect } from 'react'
 import { motion } from 'motion/react'
 import { toast } from 'sonner'
 import { useConfigStore } from '@/app/(home)/stores/config-store'
-import LikeButton from '@/components/like-button'
-import GithubSVG from '@/svgs/github.svg'
 
 const TEMPLATES = [
 	{ label: '挪车', text: '您好，有人需要您挪车，请及时处理。' },
@@ -37,7 +35,8 @@ function saveSubmitCount(count: number) {
 export default function Page() {
 	const { siteContent } = useConfigStore()
 	const webhookUrl = siteContent.wecomWebhookUrl || ''
-	const [message, setMessage] = useState('')
+	const phoneNumber = siteContent.ncPhoneNumber || ''
+	const [message, setMessage] = useState('您好，有人需要您挪车，请及时处理。')
 	const [submitting, setSubmitting] = useState(false)
 	const [submitCount, setSubmitCount] = useState(0)
 	const [mounted, setMounted] = useState(false)
@@ -171,27 +170,24 @@ export default function Page() {
 								? '请先在站点设置中配置 Webhook'
 								: submitCount >= MAX_SUBMISSIONS
 									? '今日已达上限'
-									: `企业微信通知 📱`}
+									: `微信通知 📱`}
 					</button>
 				</motion.div>
 
-				{/* Bottom links */}
+				{/* Call button */}
 				<motion.div
-					initial={{ opacity: 0 }}
-					animate={{ opacity: 1 }}
-					transition={{ delay: 0.5 }}
-					className='mt-10 flex items-center justify-center gap-6'>
-					<motion.a
-						href='https://github.com/YYsuni/2025-blog-public'
-						target='_blank'
-						rel='noreferrer'
-						whileHover={{ scale: 1.1 }}
-						whileTap={{ scale: 0.9 }}
-						className='bg-card flex h-[53px] w-[53px] items-center justify-center rounded-full border'>
-						<GithubSVG />
-					</motion.a>
-					<LikeButton slug='open-source' delay={0} />
+					initial={{ opacity: 0, y: 10 }}
+					animate={{ opacity: 1, y: 0 }}
+					transition={{ delay: 0.45 }}>
+					<a
+						href={`tel:${phoneNumber}`}
+						className={`btn-rounded flex w-full items-center justify-center gap-2 border bg-white/60 py-3 text-base backdrop-blur-sm transition-colors hover:bg-white/80 ${
+							!phoneNumber ? 'pointer-events-none opacity-50' : ''
+						}`}>
+						📞 电话联系{!phoneNumber ? '（未设置号码）' : ''}
+					</a>
 				</motion.div>
+
 			</div>
 		</div>
 	)

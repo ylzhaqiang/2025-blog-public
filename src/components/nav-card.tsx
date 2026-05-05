@@ -48,7 +48,7 @@ const list = [
 	{
 		icon: AboutOutlineSVG,
 		iconActive: AboutFilledSVG,
-		label: '关于',
+		label: '挪车',
 		href: '/about',
 		key: 'about'
 	},
@@ -64,6 +64,7 @@ export default function NavCard() {
 	const { maxSM } = useSize()
 	const [hoveredIndex, setHoveredIndex] = useState<number>(0)
 	const [pendingHref, setPendingHref] = useState<string | null>(null)
+	const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 	const { siteContent, cardStyles } = useConfigStore()
 	const styles = cardStyles.navCard
 	const hiCardStyles = cardStyles.hiCard
@@ -134,6 +135,11 @@ export default function NavCard() {
 		}
 	}
 
+	const handleNavClick = (item: (typeof list)[number]) => {
+		handleItemClick(item)
+		if (maxSM) setMobileMenuOpen(false)
+	}
+
 	// Left sidebar mode
 	if (showLeftSidebar && show) {
 		return (
@@ -144,43 +150,71 @@ export default function NavCard() {
 					onSuccess={handlePasswordSuccess}
 					onCancel={() => setPendingHref(null)}
 				/>
-			<nav
-				className='fixed left-0 top-1/2 -translate-y-1/2 z-50 flex h-auto w-24 flex-col items-center gap-3 border-r border-border/50 bg-background/80 backdrop-blur-sm py-4'
-				aria-label='站内外导航'
-			>
-				{/* Logo */}
-				<Link href='/' className='mb-8 flex flex-col items-center gap-1'>
-					<Image src='/images/avatar.png' alt='avatar' width={54} height={54} className='rounded-full' style={{ boxShadow: '0 8px 16px -4px rgba(0,0,0,0.15)' }} />
-				</Link>
 
-				{/* Nav items */}
-				<div className='relative flex flex-1 flex-col gap-3'>
-					<motion.div
-						className='absolute left-1.5 rounded-full border border-border/60 bg-card'
-						layoutId='nav-hover'
-						initial={false}
-						animate={{ top: hoveredIndex * 84, left: 0, width: 'calc(100% - 12px)', height: 72 }}
-						transition={{ type: 'spring', stiffness: 400, damping: 30 }}
+				{/* Mobile: left-edge tap zone to open menu */}
+				{maxSM && !mobileMenuOpen && (
+					<button
+						onClick={() => setMobileMenuOpen(true)}
+						className='fixed left-0 top-0 z-40 h-full w-6 bg-transparent'
+						aria-label='打开导航'
 					/>
-					{list.map((item, index) => (
-						<button
-							key={item.href}
-							onClick={() => handleItemClick(item)}
-							onMouseEnter={() => setHoveredIndex(index)}
-							onMouseLeave={() => setHoveredIndex(activeIndex ?? 0)}
-							className={cn(
-								'relative z-10 flex h-[72px] w-[72px] flex-col items-center justify-center gap-1 rounded-full transition-colors cursor-pointer',
-								activeIndex === index ? 'text-primary' : 'text-secondary hover:text-primary'
-							)}
-						>
-							{activeIndex === index
-								? <item.iconActive className='h-9 w-9' />
-								: <item.icon className='h-9 w-9' />}
-							<span className='text-[10px] font-medium leading-none'>{item.label}</span>
-						</button>
-					))}
-				</div>
-			</nav>
+				)}
+
+				{/* Mobile: backdrop when menu open */}
+				{maxSM && mobileMenuOpen && (
+					<motion.div
+						initial={{ opacity: 0 }}
+						animate={{ opacity: 1 }}
+						exit={{ opacity: 0 }}
+						transition={{ duration: 0.2 }}
+						onClick={() => setMobileMenuOpen(false)}
+						className='fixed inset-0 z-40 bg-black/30 backdrop-blur-sm'
+					/>
+				)}
+
+				{/* Sidebar: always visible on desktop, animated slide on mobile */}
+				<motion.nav
+					initial={maxSM ? { x: -96, opacity: 0 } : false}
+					animate={maxSM ? { x: mobileMenuOpen ? 0 : -96, opacity: mobileMenuOpen ? 1 : 0 } : {}}
+					transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+					className={`fixed left-0 top-1/2 -translate-y-1/2 z-50 flex h-auto w-24 flex-col items-center gap-3 border-r border-border/50 bg-background/80 backdrop-blur-sm py-4 ${
+						maxSM && !mobileMenuOpen ? 'pointer-events-none' : ''
+					}`}
+					aria-label='站内外导航'
+				>
+					{/* Logo */}
+					<Link href='/' className='mb-8 flex flex-col items-center gap-1' onClick={() => maxSM && setMobileMenuOpen(false)}>
+						<Image src='/images/avatar.png' alt='avatar' width={54} height={54} className='rounded-full' style={{ boxShadow: '0 8px 16px -4px rgba(0,0,0,0.15)' }} />
+					</Link>
+
+					{/* Nav items */}
+					<div className='relative flex flex-1 flex-col gap-3'>
+						<motion.div
+							className='absolute left-1.5 rounded-full border border-border/60 bg-card'
+							layoutId='nav-hover'
+							initial={false}
+							animate={{ top: hoveredIndex * 84, left: 0, width: 'calc(100% - 12px)', height: 72 }}
+							transition={{ type: 'spring', stiffness: 400, damping: 30 }}
+						/>
+						{list.map((item, index) => (
+							<button
+								key={item.href}
+								onClick={() => handleNavClick(item)}
+								onMouseEnter={() => setHoveredIndex(index)}
+								onMouseLeave={() => setHoveredIndex(activeIndex ?? 0)}
+								className={cn(
+									'relative z-10 flex h-[72px] w-[72px] flex-col items-center justify-center gap-1 rounded-full transition-colors cursor-pointer',
+									activeIndex === index ? 'text-primary' : 'text-secondary hover:text-primary'
+								)}
+							>
+								{activeIndex === index
+									? <item.iconActive className='h-9 w-9' />
+									: <item.icon className='h-9 w-9' />}
+								<span className='text-[10px] font-medium leading-none'>{item.label}</span>
+							</button>
+						))}
+					</div>
+				</motion.nav>
 			</>
 		)
 	}
