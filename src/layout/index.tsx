@@ -55,7 +55,7 @@ export default function Layout({ children }: PropsWithChildren) {
 			)}
 			<BlurredBubblesBackground colors={siteContent.backgroundColors} regenerateKey={regenerateKey} />
 
-			<main className={isHome ? 'relative z-10 h-full' : 'relative z-10 h-full pl-16'}>
+			<main className={isHome ? 'relative z-10 h-full' : 'relative z-10 h-full pl-16 max-sm:pl-0'}>
 				{children}
 				<NavCard />
 
