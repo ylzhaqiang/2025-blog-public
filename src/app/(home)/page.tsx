@@ -1,17 +1,8 @@
 'use client'
 
+import dynamic from 'next/dynamic'
 import HiCard from '@/app/(home)/hi-card'
 import ArtCard from '@/app/(home)/art-card'
-import ClockCard from '@/app/(home)/clock-card'
-import CalendarCard from '@/app/(home)/calendar-card'
-import SocialButtons from '@/app/(home)/social-buttons'
-import ShareCard from '@/app/(home)/share-card'
-import AritcleCard from '@/app/(home)/aritcle-card'
-import WriteButtons from '@/app/(home)/write-buttons'
-import LikePosition from './like-position'
-import HatCard from './hat-card'
-import BeianCard from './beian-card'
-import RssReader from './rss-reader'
 import { useSize } from '@/hooks/use-size'
 import { motion } from 'motion/react'
 import { useLayoutEditStore } from './stores/layout-edit-store'
@@ -20,6 +11,18 @@ import { toast } from 'sonner'
 import ConfigDialog from './config-dialog/index'
 import { useEffect } from 'react'
 import SnowfallBackground from '@/layout/backgrounds/snowfall'
+
+// 懒加载非首屏的动画卡片，拆分 JS 包
+const ClockCard = dynamic(() => import('@/app/(home)/clock-card'), { ssr: false, loading: () => <div className='h-48' /> })
+const CalendarCard = dynamic(() => import('@/app/(home)/calendar-card'), { ssr: false, loading: () => <div className='h-48' /> })
+const SocialButtons = dynamic(() => import('@/app/(home)/social-buttons'), { ssr: false, loading: () => <div className='h-32' /> })
+const ShareCard = dynamic(() => import('@/app/(home)/share-card'), { ssr: false, loading: () => <div className='h-32' /> })
+const AritcleCard = dynamic(() => import('@/app/(home)/aritcle-card'), { ssr: false, loading: () => <div className='h-48' /> })
+const WriteButtons = dynamic(() => import('@/app/(home)/write-buttons'), { ssr: false, loading: () => <div className='h-24' /> })
+const LikePosition = dynamic(() => import('./like-position'), { ssr: false, loading: () => <div className='h-16' /> })
+const HatCard = dynamic(() => import('./hat-card'), { ssr: false, loading: () => <div className='h-24' /> })
+const BeianCard = dynamic(() => import('./beian-card'), { ssr: false, loading: () => <div className='h-20' /> })
+const RssReader = dynamic(() => import('./rss-reader'), { ssr: false, loading: () => <div className='h-40' /> })
 
 export default function Home() {
 	const { maxSM } = useSize()
