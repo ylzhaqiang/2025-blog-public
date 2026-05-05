@@ -89,7 +89,7 @@
 	],
 	"clockShowSeconds": false,
 	"summaryInContent": false,
-	"wecomWebhookUrl": "",
+	"wecomWebhookUrl": "https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=c8c4336c-9ba4-470a-a846-490fc75c7031",
 	"isCachePem": true,
 	"hideEditButton": false,
 	"enableCategories": true,
