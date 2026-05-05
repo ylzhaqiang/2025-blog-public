@@ -3,6 +3,7 @@
 import { useState, useCallback, useEffect } from 'react'
 import { motion } from 'motion/react'
 import { toast } from 'sonner'
+import { useConfigStore } from '@/app/(home)/stores/config-store'
 import LikeButton from '@/components/like-button'
 import GithubSVG from '@/svgs/github.svg'
 
@@ -34,6 +35,8 @@ function saveSubmitCount(count: number) {
 }
 
 export default function Page() {
+	const { siteContent } = useConfigStore()
+	const webhookUrl = siteContent.wecomWebhookUrl || ''
 	const [message, setMessage] = useState('')
 	const [submitting, setSubmitting] = useState(false)
 	const [submitCount, setSubmitCount] = useState(0)
@@ -46,7 +49,7 @@ export default function Page() {
 
 	const charCount = message.length
 	const overLimit = charCount > MAX_CHARS
-	const canSubmit = mounted && !overLimit && message.trim().length > 0 && submitCount < MAX_SUBMISSIONS && !submitting
+	const canSubmit = mounted && !overLimit && message.trim().length > 0 && submitCount < MAX_SUBMISSIONS && !submitting && !!webhookUrl
 
 	const useTemplate = useCallback((text: string) => {
 		setMessage(text)
@@ -60,7 +63,7 @@ export default function Page() {
 			const res = await fetch('/api/notify', {
 				method: 'POST',
 				headers: { 'Content-Type': 'application/json' },
-				body: JSON.stringify({ message: message.trim() })
+				body: JSON.stringify({ message: message.trim(), webhookUrl })
 			})
 			const data = await res.json()
 
@@ -78,7 +81,7 @@ export default function Page() {
 		} finally {
 			setSubmitting(false)
 		}
-	}, [canSubmit, message, submitCount])
+	}, [canSubmit, message, submitCount, webhookUrl])
 
 	return (
 		<div className='flex flex-col items-center justify-center px-6 pt-32 pb-12 max-sm:px-0'>
@@ -162,7 +165,13 @@ export default function Page() {
 						className={`brand-btn w-full justify-center py-3 text-base ${
 							!canSubmit ? 'cursor-not-allowed opacity-50' : ''
 						}`}>
-						{submitting ? '发送中...' : `企业微信通知 ${submitCount >= MAX_SUBMISSIONS ? '(已达上限)' : '📱'}`}
+						{submitting
+							? '发送中...'
+							: !webhookUrl
+								? '请先在站点设置中配置 Webhook'
+								: submitCount >= MAX_SUBMISSIONS
+									? '今日已达上限'
+									: `企业微信通知 📱`}
 					</button>
 				</motion.div>
 

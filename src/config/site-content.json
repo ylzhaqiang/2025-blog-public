@@ -89,6 +89,7 @@
 	],
 	"clockShowSeconds": false,
 	"summaryInContent": false,
+	"wecomWebhookUrl": "",
 	"isCachePem": true,
 	"hideEditButton": false,
 	"enableCategories": true,

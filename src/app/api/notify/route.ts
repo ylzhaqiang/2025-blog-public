@@ -2,15 +2,13 @@ import { NextRequest, NextResponse } from 'next/server'
 
 export async function POST(req: NextRequest) {
 	try {
-		const { message } = await req.json()
+		const { message, webhookUrl } = await req.json()
 
 		if (!message) {
 			return NextResponse.json({ errcode: -1, errmsg: '消息内容不能为空' }, { status: 400 })
 		}
-
-		const webhookUrl = process.env.WECOM_WEBHOOK_URL
 		if (!webhookUrl) {
-			return NextResponse.json({ errcode: -1, errmsg: '未配置 WECOM_WEBHOOK_URL 环境变量' }, { status: 500 })
+			return NextResponse.json({ errcode: -1, errmsg: '未配置企业微信 Webhook，请在站点设置中填写' }, { status: 400 })
 		}
 
 		const res = await fetch(webhookUrl, {
