@@ -50,10 +50,11 @@
 		},
 		{
 			"id": "email",
-			"type": "x",
-			"value": "https://ollama.com/settings",
+			"type": "link",
+			"value": "https://mail.163.com",
 			"label": "",
-			"order": 2
+			"order": 2,
+			"icon": "https://nasicon.top/icon/MailMaster--%E7%BD%91%E6%98%93%E9%82%AE%E7%AE%B1%E5%A4%A7%E5%B8%88--mail.163.com.png"
 		},
 		{
 			"id": "button-1767877932636",
