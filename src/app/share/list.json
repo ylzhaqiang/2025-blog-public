@@ -55,10 +55,32 @@
 		"stars": 3
 	},
 	{
+		"name": "WebTop",
+		"logo": "/images/share/Ubuntu--Ubuntu--ubuntu.com.png",
+		"url": "https://web.724782.xyz:1977",
+		"internalUrl": "",
+		"description": "",
+		"tags": [
+			"Nas App"
+		],
+		"stars": 3
+	},
+	{
 		"name": "落雪音乐",
 		"logo": "/images/share/lx.svg",
 		"url": "https://lxmusic.724782.xyz:1977",
 		"internalUrl": "http://192.168.8.5:9527",
+		"description": "",
+		"tags": [
+			"Nas App"
+		],
+		"stars": 3
+	},
+	{
+		"name": "TTS",
+		"logo": "/images/share/mcp_context7.png",
+		"url": "https://tts.724782.xyz:1977",
+		"internalUrl": "http://192.168.8.5:8786",
 		"description": "",
 		"tags": [
 			"Nas App"
@@ -421,6 +443,17 @@
 		"logo": "/images/share/fafn.png",
 		"url": "https://nasicon.top/",
 		"description": "1",
+		"tags": [
+			"收藏"
+		],
+		"stars": 3
+	},
+	{
+		"name": "直播源",
+		"logo": "/images/share/Googletv_A.png",
+		"url": "https://live.zbds.top/",
+		"internalUrl": "",
+		"description": "",
 		"tags": [
 			"收藏"
 		],
