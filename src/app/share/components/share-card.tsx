@@ -36,17 +36,13 @@ export function ShareCard({ share, isEditMode = false, onUpdate, onDelete }: Sha
 	}, [share])
 
 	const handleFieldChange = (field: keyof Share, value: any) => {
-		const updated = { ...localShare, [field]: value }
-		setLocalShare(updated)
-		onUpdate?.(updated, share, logoItem || undefined)
+		setLocalShare(prev => ({ ...prev, [field]: value }))
 	}
 
 	const handleLogoSubmit = (logo: LogoItem) => {
 		setLogoItem(logo)
 		const logoUrl = logo.type === 'url' ? logo.url : `/images/share/${logo.file.name}`
-		const updated = { ...localShare, logo: logoUrl }
-		setLocalShare(updated)
-		onUpdate?.(updated, share, logo)
+		setLocalShare(prev => ({ ...prev, logo: logoUrl }))
 	}
 
 	const handleTagsChange = (tagsStr: string) => {
@@ -61,6 +57,11 @@ export function ShareCard({ share, isEditMode = false, onUpdate, onDelete }: Sha
 		setLocalShare(share)
 		setIsEditing(false)
 		setLogoItem(null)
+	}
+
+	const handleDone = () => {
+		onUpdate?.(localShare, share, logoItem || undefined)
+		setIsEditing(false)
 	}
 
 	const canEdit = isEditMode && isEditing
@@ -118,7 +119,7 @@ export function ShareCard({ share, isEditMode = false, onUpdate, onDelete }: Sha
 							<button onClick={handleCancel} className='rounded-lg px-2 py-1.5 text-xs text-gray-400 transition-colors hover:text-gray-600'>
 								取消
 							</button>
-							<button onClick={() => setIsEditing(false)} className='rounded-lg px-2 py-1.5 text-xs text-blue-400 transition-colors hover:text-blue-600'>
+							<button onClick={handleDone} className='rounded-lg px-2 py-1.5 text-xs text-blue-400 transition-colors hover:text-blue-600'>
 								完成
 							</button>
 						</>
