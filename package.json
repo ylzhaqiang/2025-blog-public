@@ -1,5 +1,4 @@
-json
-    {
+{
       "name": "2025-blog",
       "version": "0.1.0",
       "private": true,
