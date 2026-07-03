@@ -1,3 +1,5 @@
+'use client'
+
 import { ANIMATION_DELAY, CARD_SPACING } from '@/consts'
 import PenSVG from '@/svgs/pen.svg'
 import { motion } from 'motion/react'
@@ -8,6 +10,7 @@ import { useRouter } from 'next/navigation'
 import { useSize } from '@/hooks/use-size'
 import DotsSVG from '@/svgs/dots.svg'
 import { HomeDraggableLayer } from './home-draggable-layer'
+import { PasswordDialog } from '@/components/password-dialog'
 
 export default function WriteButton() {
 	const center = useCenterStore()
@@ -19,10 +22,26 @@ export default function WriteButton() {
 	const clockCardStyles = cardStyles.clockCard
 
 	const [show, setShow] = useState(false)
+	const [pendingOpen, setPendingOpen] = useState(false)
+
+	const password = siteContent.passwordProtection?.password || ''
 
 	useEffect(() => {
 		setTimeout(() => setShow(true), styles.order * ANIMATION_DELAY * 1000)
 	}, [styles.order])
+
+	const handleOpenConfig = () => {
+		setPendingOpen(true)
+	}
+
+	const handlePasswordSuccess = () => {
+		setPendingOpen(false)
+		setConfigDialogOpen(true)
+	}
+
+	const handlePasswordCancel = () => {
+		setPendingOpen(false)
+	}
 
 	if (maxSM) return null
 
@@ -32,40 +51,48 @@ export default function WriteButton() {
 	const y = styles.offsetY !== null ? center.y + styles.offsetY : center.y - clockCardStyles.offset - styles.height - CARD_SPACING / 2 - clockCardStyles.height
 
 	return (
-		<HomeDraggableLayer cardKey='writeButtons' x={x} y={y} width={styles.width} height={styles.height}>
-			<motion.div initial={{ left: x, top: y }} animate={{ left: x, top: y }} className='absolute flex items-center gap-4'>
-				<motion.button
-					onClick={() => router.push('/write')}
-					initial={{ opacity: 0, scale: 0.6 }}
-					animate={{ opacity: 1, scale: 1 }}
-					whileHover={{ scale: 1.05 }}
-					whileTap={{ scale: 0.95 }}
-					style={{ boxShadow: 'inset 0 0 12px rgba(255, 255, 255, 0.4)' }}
-					className='brand-btn whitespace-nowrap'>
-					{siteContent.enableChristmas && (
-						<>
-							<img
-								src='/images/christmas/snow-8.webp'
-								alt='Christmas decoration'
-								className='pointer-events-none absolute'
-								style={{ width: 60, left: -2, top: -4, opacity: 0.95 }}
-							/>
-						</>
-					)}
+		<>
+			<PasswordDialog
+				open={pendingOpen}
+				password={password}
+				onSuccess={handlePasswordSuccess}
+				onCancel={handlePasswordCancel}
+			/>
+			<HomeDraggableLayer cardKey='writeButtons' x={x} y={y} width={styles.width} height={styles.height}>
+				<motion.div initial={{ left: x, top: y }} animate={{ left: x, top: y }} className='absolute flex items-center gap-4'>
+					<motion.button
+						onClick={() => router.push('/write')}
+						initial={{ opacity: 0, scale: 0.6 }}
+						animate={{ opacity: 1, scale: 1 }}
+						whileHover={{ scale: 1.05 }}
+						whileTap={{ scale: 0.95 }}
+						style={{ boxShadow: 'inset 0 0 12px rgba(255, 255, 255, 0.4)' }}
+						className='brand-btn whitespace-nowrap'>
+						{siteContent.enableChristmas && (
+							<>
+								<img
+									src='/images/christmas/snow-8.webp'
+									alt='Christmas decoration'
+									className='pointer-events-none absolute'
+									style={{ width: 60, left: -2, top: -4, opacity: 0.95 }}
+								/>
+							</>
+						)}
 
-					<PenSVG />
-					<span>写文章</span>
-				</motion.button>
-				<motion.button
-					initial={{ opacity: 0, scale: 0.6 }}
-					animate={{ opacity: 1, scale: 1 }}
-					whileHover={{ scale: 1.05 }}
-					whileTap={{ scale: 0.95 }}
-					onClick={() => setConfigDialogOpen(true)}
-					className='p-2'>
-					<DotsSVG className='h-6 w-6' />
-				</motion.button>
-			</motion.div>
-		</HomeDraggableLayer>
+						<PenSVG />
+						<span>写文章</span>
+					</motion.button>
+					<motion.button
+						initial={{ opacity: 0, scale: 0.6 }}
+						animate={{ opacity: 1, scale: 1 }}
+						whileHover={{ scale: 1.05 }}
+						whileTap={{ scale: 0.95 }}
+						onClick={handleOpenConfig}
+						className='p-2'>
+						<DotsSVG className='h-6 w-6' />
+					</motion.button>
+				</motion.div>
+			</HomeDraggableLayer>
+		</>
 	)
 }
