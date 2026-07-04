@@ -448,5 +448,38 @@
 			"收藏"
 		],
 		"stars": 3
+	},
+	{
+		"name": "koolcenter",
+		"logo": "/images/share/logo.svg",
+		"url": "https://fw.koolcenter.com/",
+		"internalUrl": "",
+		"description": "",
+		"tags": [
+			"收藏"
+		],
+		"stars": 3
+	},
+	{
+		"name": "TP-LINK商用",
+		"logo": "/images/share/TpLinkIot--TP-LINK物联--tp-link.com.cn.png",
+		"url": "https://smbcloud.tp-link.com.cn/login.html",
+		"internalUrl": "",
+		"description": "",
+		"tags": [
+			"收藏"
+		],
+		"stars": 3
+	},
+	{
+		"name": "CPU排行",
+		"logo": "/images/share/R-C.jpg",
+		"url": "https://cpu.bmcx.com",
+		"internalUrl": "",
+		"description": "",
+		"tags": [
+			"收藏"
+		],
+		"stars": 3
 	}
 ]
